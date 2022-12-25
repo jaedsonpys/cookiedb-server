@@ -13,7 +13,7 @@ users_db = CookieDB(
     database_local='./'
 )
 
-users_db.create_database(config.USERS_DB)
+users_db.create_database(config.USERS_DB, if_not_exists=True)
 users_db.open(config.USERS_DB)
 
 if __name__ == '__main__':
