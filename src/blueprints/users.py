@@ -24,9 +24,9 @@ def register():
         password = data.get('password')
 
         if not all([username, email, password]):
-            return jsonify(status='error', message='email_and_password_required'), 400
+            response = jsonify(status='error', message='email_and_password_required'), 400
         elif _users_exists(email):
-            return jsonify(status='error', message='email_already_used'), 409
+            response = jsonify(status='error', message='email_already_used'), 409
         else:
             pw_salt = bcrypt.gensalt()
             hashed_pw = bcrypt.hashpw(password.encode(), pw_salt)
