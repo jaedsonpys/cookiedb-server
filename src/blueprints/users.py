@@ -1,6 +1,3 @@
-import hashlib
-import random
-
 import bcrypt
 from flask import Blueprint, jsonify
 from flask import request
@@ -24,15 +21,10 @@ def register():
         if not all([username, email, password]):
             return jsonify(status='error', message='email_and_password_required'), 400
         else:
-            uuid_salt = str(random.randint(10000000, 99999999))
-            pre_uuid = username + email + uuid_salt
-            uuid = hashlib.md5(pre_uuid)
-
             pw_salt = bcrypt.gensalt()
             hashed_pw = bcrypt.hashpw(password.encode(), pw_salt)
 
             users_db.add(f'users/{email}', {
-                'uuid': uuid,
                 'username': username,
                 'email': email,
                 'password': hashed_pw.decode()
