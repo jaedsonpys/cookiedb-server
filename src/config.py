@@ -1,4 +1,5 @@
 import dotenv
+from cookiedb import CookieDB
 
 env = dotenv.dotenv_values('.env')
 
@@ -13,3 +14,11 @@ SERVER_DEBUG = bool(env.get('SERVER_DEBUG', False))
 
 SERVER_CONFIG_DB = 'cookiedb-server'
 USERS_DB = 'cookiedb-users'
+
+users_db = CookieDB(
+    key=SERVER_DATABASE_KEY,
+    database_local='./'
+)
+
+users_db.create_database(USERS_DB, if_not_exists=True)
+users_db.open(USERS_DB)
