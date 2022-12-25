@@ -7,6 +7,11 @@ from config import users_db
 users = Blueprint('users', __name__)
 
 
+def _users_exists(email: str) -> bool:
+    user = users_db.get(f'users/{email}')
+    return bool(user)
+
+
 @users.route('/register', methods=['POST'])
 def register():
     data: dict = request.json
