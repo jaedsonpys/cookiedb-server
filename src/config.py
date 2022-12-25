@@ -9,7 +9,7 @@ UTOKEN_SECRET_KEY = env.get('UTOKEN_SECRET_KEY')
 
 SERVER_HOST = env.get('SERVER_HOST', '127.0.0.1')
 SERVER_PORT = env.get('SERVER_PORT', 5500)
-SERVER_DEBUG = env.get('SERVER_DEBUG', False)
+SERVER_DEBUG = bool(env.get('SERVER_DEBUG', False))
 
 SERVER_CONFIG_DB = 'cookiedb-server'
 USERS_DB = 'cookiedb-users'
