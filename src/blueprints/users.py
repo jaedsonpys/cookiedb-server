@@ -1,8 +1,12 @@
+from datetime import datetime, timedelta
+
 import bcrypt
+import utoken
 from flask import Blueprint, jsonify
 from flask import request
 
 from config import users_db
+from config import UTOKEN_SECRET_KEY
 
 users = Blueprint('users', __name__)
 
@@ -36,3 +40,9 @@ def register():
                 'email': email,
                 'password': hashed_pw.decode()
             })
+
+            exp_time = datetime.now() + timedelta(minutes=10)
+            token = utoken.encode({'email': email, 'max-time': exp_time}, UTOKEN_SECRET_KEY)
+            response = jsonify(status='success', token=token), 201
+
+    return response
