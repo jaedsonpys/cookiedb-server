@@ -22,7 +22,7 @@ def _database_exists(user_email: str, database_name: str) -> bool:
     return database_name in databases
 
 
-@database.route('/', methods=['GET', 'POST', 'DELETE'])
+@database.route('/database', methods=['GET', 'POST', 'DELETE'])
 @required_auth
 def db_handle(payload):
     if request.method == 'POST':

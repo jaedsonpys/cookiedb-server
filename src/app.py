@@ -11,7 +11,7 @@ app = Flask(__name__)
 cors = CORS(app)
 
 app.register_blueprint(users)
-app.register_blueprint(database, url_prefix='/database')
+app.register_blueprint(database)
 
 if __name__ == '__main__':
     app.run(
