@@ -30,12 +30,14 @@ def db_handle(payload):
         if not data:
             response = jsonify(status='error', message='no_data_found'), 400
         else:
+            user_email = payload['email']
             database_name = data.get('databaseName')
             
             if not database_name:
                 response = jsonify(status='error', message='database_name_required'), 400
+            elif _database_exists(user_email, database_name):
+                response = jsonify(status='error', message='database_already_exists'), 409
             else:
-                user_email = payload['email']
                 user_password = users_db.get(f'users/{user_email}/password')
                 new_db_id = generate_id()
 
