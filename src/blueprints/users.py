@@ -28,7 +28,7 @@ def register():
         password = data.get('password')
 
         if not all([username, email, password]):
-            response = jsonify(status='error', message='email_and_password_required'), 400
+            response = jsonify(status='error', message='username_email_and_password_required'), 400
         elif _users_exists(email):
             response = jsonify(status='error', message='email_already_used'), 409
         else:
