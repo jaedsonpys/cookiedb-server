@@ -64,6 +64,8 @@ def db_handle(payload):
             
             if not database_name:
                 response = jsonify(status='error', message='database_name_required'), 400
+            elif not _database_exists(user_email, database_name):
+                response = jsonify(status='error', message='database_not_exists'), 404
             else:
                 user_database_path = f'users/{user_email}/databases/{database_name}'
                 database_id = users_db.get(f'users/{user_email}/databases/{database_name}')
