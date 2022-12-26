@@ -21,11 +21,11 @@ def required_auth(func):
             )
 
             try:
-                utoken.decode(token, UTOKEN_SECRET_KEY)
+                payload = utoken.decode(token, UTOKEN_SECRET_KEY)
             except utoken_exceptions:
                 response = jsonify(status='error', message='invalid_auth_token'), 401
             else:
-                response = func(*args, **kwargs)
+                response = func(payload, *args, **kwargs)
         else:
             response = jsonify(status='error', message='bearer_auth_required'), 401
 
