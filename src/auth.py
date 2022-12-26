@@ -4,6 +4,12 @@ from flask import request
 from flask import jsonify
 
 from config import UTOKEN_SECRET_KEY
+from config import users_db
+
+
+def _users_exists(email: str) -> bool:
+    user = users_db.get(f'users/{email}')
+    return bool(user)
 
 
 def required_auth(func):

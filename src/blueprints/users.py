@@ -5,15 +5,11 @@ import utoken
 from flask import Blueprint, jsonify
 from flask import request
 
+from auth import _users_exists
 from config import users_db
 from config import UTOKEN_SECRET_KEY
 
 users = Blueprint('users', __name__)
-
-
-def _users_exists(email: str) -> bool:
-    user = users_db.get(f'users/{email}')
-    return bool(user)
 
 
 @users.route('/register', methods=['POST'])
