@@ -1,3 +1,4 @@
+import os
 import secrets
 
 from cookiedb import CookieDB
@@ -50,5 +51,31 @@ def db_handle(payload):
                 })
 
                 response = jsonify(status='success', message='database_created'), 201
+
+        return response
+    elif request.method == 'DELETE':
+        data = request.json
+
+        if not data:
+            response = jsonify(status='error', message='no_data_found'), 400
+        else:
+            user_email = payload['email']
+            database_name = data.get('databaseName')
+            
+            if not database_name:
+                response = jsonify(status='error', message='database_name_required'), 400
+            else:
+                user_database_path = f'users/{user_email}/databases/{database_name}'
+                database_id = users_db.get(f'users/{user_email}/databases/{database_name}')
+                
+                cookiedb_file = os.path.join(DATABASES_PATH, f'{database_id}.cookiedb')
+                users_db.delete(user_database_path)
+
+                try:
+                    os.remove(cookiedb_file)
+                except FileNotFoundError:
+                    pass
+
+                response = jsonify(status='success', message='database_deleted'), 200
 
         return response
