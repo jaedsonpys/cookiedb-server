@@ -34,7 +34,8 @@ def register():
             users_db.add(f'users/{email}', {
                 'username': username,
                 'email': email,
-                'password': hashed_pw.decode()
+                'password': hashed_pw.decode(),
+                'databases': {}
             })
 
             exp_time = datetime.now() + timedelta(minutes=10)
