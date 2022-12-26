@@ -16,6 +16,11 @@ def generate_id() -> str:
     return db_id
 
 
+def _database_exists(user_email: str, database_name: str) -> bool:
+    databases = users_db.get(f'users/{user_email}/databases')
+    return database_name in databases
+
+
 @database.route('/', methods=['GET', 'POST', 'DELETE'])
 @required_auth
 def db_handle(payload):
