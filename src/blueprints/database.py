@@ -46,10 +46,7 @@ def db_handle(payload):
                 new_db.create_database(new_db_id)
 
                 # register database ID in user databases
-                users_db.add(f'users/{user_email}/databases', {
-                    database_name: new_db_id
-                })
-
+                users_db.add(f'users/{user_email}/databases/{database_name}', new_db_id)
                 response = jsonify(status='success', message='database_created'), 201
 
         return response
