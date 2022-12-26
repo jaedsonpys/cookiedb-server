@@ -77,5 +77,9 @@ def db_handle(payload):
                     os.remove(cookiedb_file)
 
                 response = jsonify(status='success', message='database_deleted'), 200
+    elif request.method == 'GET':
+        user_email = payload['email']
+        databases = users_db.get(f'users/{user_email}/databases/')
+        response = jsonify(status='success', databases=databases.keys()), 200
 
-        return response
+    return response
