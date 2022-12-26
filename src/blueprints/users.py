@@ -46,3 +46,32 @@ def register():
             response = jsonify(status='success', token=token), 201
 
     return response
+
+
+@users.route('/login', methods=['POST'])
+def login():
+    data: dict = request.json
+
+    if not data:
+        response = jsonify(status='error', message='no_data_found'), 400
+    else:
+        email = data.get('email')
+        password = data.get('password')
+
+        if not all([email, password]):
+            response = jsonify(status='error', message='email_and_password_required'), 400
+        elif not _users_exists(email):
+            response = jsonify(status='error', message='email_or_password_invalid'), 401
+        else:
+            # confirm user password
+            hashed_pw = users_db.get(f'users/{email}/password')
+            hashed_pw = hashed_pw.encode()
+
+            if bcrypt.checkpw(password.encode(), hashed_pw):
+                exp_time = datetime.now() + timedelta(minutes=10)
+                token = utoken.encode({'email': email, 'max-time': exp_time}, UTOKEN_SECRET_KEY)
+                response = jsonify(status='success', token=token), 201
+            else:
+                response = jsonify(status='error', message='email_or_password_invalid'), 401
+
+    return response
