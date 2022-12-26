@@ -73,10 +73,8 @@ def db_handle(payload):
                 cookiedb_file = os.path.join(DATABASES_PATH, f'{database_id}.cookiedb')
                 users_db.delete(user_database_path)
 
-                try:
+                if os.path.isfile(cookiedb_file):
                     os.remove(cookiedb_file)
-                except FileNotFoundError:
-                    pass
 
                 response = jsonify(status='success', message='database_deleted'), 200
 
