@@ -80,3 +80,33 @@ def db_handle(payload):
         response = jsonify(status='success', databases=list(databases.keys())), 200
 
     return response
+
+
+@database.route('/database/<database_name: str>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@required_auth
+def use_db(payload: dict, database_name: str):
+    if request.method == 'POST':
+        data: dict = request.json
+
+        if not data:
+            response = jsonify(status='error', message='no_data_found'), 400
+        else:
+            path = data.get('path')
+            value = data.get('value')
+
+            if not all([path, value]):
+                response = jsonify(status='error', message='path_and_item_required'), 400
+            elif not _database_exists(database_name):
+                response = jsonify(status='error', message='database_not_exists'), 404
+            else:
+                user_email = payload['email']
+                user_pw = users_db.get(f'users/{user_email}/password')
+                db_id = users_db.get(f'users/{user_email}/databases/{database_name}')
+
+                db = CookieDB(key=user_pw, database_local=DATABASES_PATH)
+                db.open(db_id)
+                db.add(path, value)
+
+                response = jsonify(status='success', message='item_added'), 201
+
+    return response
