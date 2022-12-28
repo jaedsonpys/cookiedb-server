@@ -1,3 +1,5 @@
+from functools import wraps
+
 import utoken
 
 from flask import request
@@ -13,6 +15,7 @@ def _users_exists(email: str) -> bool:
 
 
 def required_auth(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         authorization = request.headers.get('Authorization')
 
