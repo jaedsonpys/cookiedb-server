@@ -46,8 +46,6 @@ class TestAPI(bupytest.UnitTest):
         self.assert_true(response['token'])
         self.assert_expected(response['status'], 'success')
 
-        self._token = response['token']
-
     def test_register_same_user(self):
         req = requests.post(URL + '/register', json={
             'username': USER_NAME,
