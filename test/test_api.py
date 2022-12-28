@@ -20,6 +20,7 @@ class TestAPI(bupytest.UnitTest):
         if os.path.isfile('./cookiedb-users.cookiedb'):
             os.remove('./cookiedb-users.cookiedb')
 
+        # Please run the test before run the server. 
         # wait server start
         print('Start the CookieDB Server in \033[1msrc/app.py\033[m')
         while True:
@@ -64,7 +65,7 @@ class TestAPI(bupytest.UnitTest):
     def test_register_data_required_error(self):
         # removing email and password from register data
         req = requests.post(URL + '/register', json={
-            'username': USER_NAME,
+            'username': USER_NAME
         })
 
         # expected 400 (Bad Request)
