@@ -47,6 +47,20 @@ class TestAPI(bupytest.UnitTest):
 
         self._token = response['token']
 
+    def test_register_same_user(self):
+        req = requests.post(URL + '/register', json={
+            'username': USER_NAME,
+            'email': USER_EMAIL,
+            'password': USER_PW
+        })
+
+        # expected 409 (Conflict)
+        self.assert_expected(req.status_code, 409)
+        response = req.json()
+
+        self.assert_expected(response['status'], 'error')
+        self.assert_expected(response['message'], 'email_already_used')
+
 
 if __name__ == '__main__':
     bupytest.this()
