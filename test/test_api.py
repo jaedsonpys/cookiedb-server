@@ -1,6 +1,3 @@
-import os
-import shutil
-
 import bupytest
 import requests
 
@@ -13,12 +10,6 @@ USER_PW = '12345678'
 class TestAPI(bupytest.UnitTest):
     def __init__(self):
         super().__init__()
-
-        if os.path.isdir('./database'):
-            shutil.rmtree('./database', ignore_errors=True)
-
-        if os.path.isfile('./cookiedb-users.cookiedb'):
-            os.remove('./cookiedb-users.cookiedb')
 
     def test_register_user(self):
         req = requests.post(URL + '/register', json={
