@@ -31,6 +31,9 @@ class TestAPI(bupytest.UnitTest):
                 continue
             else:
                 break
+        
+    def _get_auth_header(self):
+        return {'Authorization': f'Bearer {self._token}'}
 
     def test_register_user(self):
         req = requests.post(URL + '/register', json={
