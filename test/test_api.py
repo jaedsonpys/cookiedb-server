@@ -89,6 +89,20 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'success')
         self._token = response['token']
 
+    def test_invalid_login_data(self):
+        req = requests.post(URL + '/login', json={
+            'email': USER_EMAIL,
+            'password': 'invalid_password'
+        })
+
+        # expected 401 (Unauthorized)
+        self.assert_expected(req.status_code, 401)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'error')
+        self.assert_expected(response['message'], 'email_or_password_invalid')
+
 
 if __name__ == '__main__':
     bupytest.this()
