@@ -119,6 +119,15 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'error')
         self.assert_expected(response['message'], 'email_and_password_required')
 
+    def test_list_databases(self):
+        req = requests.get(URL + '/database', headers=self._get_auth_header())
+        self.assert_expected(req.status_code, 200)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['result'], [])
+
 
 if __name__ == '__main__':
     bupytest.this()
