@@ -85,7 +85,29 @@ def db_handle(payload):
 @database.route('/database/<database_name>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @required_auth
 def use_db(payload, database_name):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        data: dict = request.json
+
+        if not data:
+            response = jsonify(status='error', message='no_data_found'), 400
+        else:
+            user_email = payload['email']
+            path = data.get('path')
+
+            if not path:
+                response = jsonify(status='error', message='path_required'), 400
+            elif not _database_exists(user_email, database_name):
+                response = jsonify(status='error', message='database_not_exists'), 404
+            else:
+                user_pw = users_db.get(f'users/{user_email}/password')
+                db_id = users_db.get(f'users/{user_email}/databases/{database_name}')
+
+                db = CookieDB(key=user_pw, database_local=DATABASES_PATH)
+                db.open(db_id)
+                result = db.get(path)
+
+                response = jsonify(status='success', result=result), 200
+    elif request.method == 'POST':
         data: dict = request.json
 
         if not data:
