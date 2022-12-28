@@ -79,7 +79,7 @@ def db_handle(payload):
     elif request.method == 'GET':
         user_email = payload['email']
         databases = users_db.get(f'users/{user_email}/databases')
-        response = jsonify(status='success', databases=list(databases.keys())), 200
+        response = jsonify(status='success', result=list(databases.keys())), 200
 
     return response
 
