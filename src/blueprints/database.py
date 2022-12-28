@@ -22,6 +22,12 @@ def _database_exists(user_email: str, database_name: str) -> bool:
     return database_name in databases
 
 
+def _get_user_database(email: str) -> CookieDB:
+    user_password = users_db.get(f'users/{email}/password')
+    db = CookieDB(key=user_password, database_local=DATABASES_PATH)
+    return db
+
+
 @database.route('/database', methods=['GET', 'POST', 'DELETE'])
 @required_auth
 def db_handle(payload):
@@ -39,10 +45,8 @@ def db_handle(payload):
             elif _database_exists(user_email, database_name):
                 response = jsonify(status='error', message='database_already_exists'), 409
             else:
-                user_password = users_db.get(f'users/{user_email}/password')
                 new_db_id = generate_id()
-
-                new_db = CookieDB(key=user_password, database_local=DATABASES_PATH)
+                new_db = _get_user_database(user_email)
                 new_db.create_database(new_db_id)
 
                 # register database ID in user databases
@@ -99,10 +103,8 @@ def use_db(payload, database_name):
             elif not _database_exists(user_email, database_name):
                 response = jsonify(status='error', message='database_not_exists'), 404
             else:
-                user_pw = users_db.get(f'users/{user_email}/password')
                 db_id = users_db.get(f'users/{user_email}/databases/{database_name}')
-
-                db = CookieDB(key=user_pw, database_local=DATABASES_PATH)
+                db = _get_user_database(user_email)
                 db.open(db_id)
                 result = db.get(path)
 
@@ -122,10 +124,8 @@ def use_db(payload, database_name):
             elif not _database_exists(user_email, database_name):
                 response = jsonify(status='error', message='database_not_exists'), 404
             else:
-                user_pw = users_db.get(f'users/{user_email}/password')
+                db = _get_user_database(user_email)
                 db_id = users_db.get(f'users/{user_email}/databases/{database_name}')
-
-                db = CookieDB(key=user_pw, database_local=DATABASES_PATH)
                 db.open(db_id)
                 db.add(path, value)
 
