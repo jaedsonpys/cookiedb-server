@@ -61,7 +61,7 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'error')
         self.assert_expected(response['message'], 'email_already_used')
 
-    def test_register_required_data_error(self):
+    def test_register_data_required_error(self):
         # removing email and password from register data
         req = requests.post(URL + '/register', json={
             'username': USER_NAME,
