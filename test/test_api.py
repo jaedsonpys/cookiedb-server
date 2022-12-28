@@ -103,6 +103,19 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'error')
         self.assert_expected(response['message'], 'email_or_password_invalid')
 
+    def test_login_data_required_error(self):
+        # removing email from login data
+        req = requests.post(URL + '/login', json={
+            'password': USER_NAME
+        })
+
+        # expected 400 (Bad Request)
+        self.assert_expected(req.status_code, 400)
+        response = req.json()
+
+        self.assert_expected(response['status'], 'error')
+        self.assert_expected(response['message'], 'email_and_password_required')
+
 
 if __name__ == '__main__':
     bupytest.this()
