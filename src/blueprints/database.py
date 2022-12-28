@@ -82,24 +82,24 @@ def db_handle(payload):
     return response
 
 
-@database.route('/database/<database_name: str>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@database.route('/database/<database_name>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @required_auth
-def use_db(payload: dict, database_name: str):
+def use_db(payload, database_name):
     if request.method == 'POST':
         data: dict = request.json
 
         if not data:
             response = jsonify(status='error', message='no_data_found'), 400
         else:
+            user_email = payload['email']
             path = data.get('path')
             value = data.get('value')
 
             if not all([path, value]):
                 response = jsonify(status='error', message='path_and_item_required'), 400
-            elif not _database_exists(database_name):
+            elif not _database_exists(user_email, database_name):
                 response = jsonify(status='error', message='database_not_exists'), 404
             else:
-                user_email = payload['email']
                 user_pw = users_db.get(f'users/{user_email}/password')
                 db_id = users_db.get(f'users/{user_email}/databases/{database_name}')
 
