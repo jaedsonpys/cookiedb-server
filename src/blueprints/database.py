@@ -52,8 +52,6 @@ def db_handle(payload):
                 # register database ID in user databases
                 users_db.add(f'users/{user_email}/databases/{database_name}', new_db_id)
                 response = jsonify(status='success', message='database_created'), 201
-
-        return response
     elif request.method == 'DELETE':
         data = request.json
 
