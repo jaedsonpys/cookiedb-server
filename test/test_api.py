@@ -13,6 +13,7 @@ USER_PW = '12345678'
 class TestAPI(bupytest.UnitTest):
     def __init__(self):
         super().__init__()
+        self._token = None
 
         if os.path.isdir('./database'):
             shutil.rmtree('./database', ignore_errors=True)
@@ -72,6 +73,21 @@ class TestAPI(bupytest.UnitTest):
 
         self.assert_expected(response['status'], 'error')
         self.assert_expected(response['message'], 'username_email_and_password_required')
+
+    def test_login_user(self):
+        req = requests.post(URL + '/login', json={
+            'email': USER_EMAIL,
+            'password': USER_PW
+        })
+
+        # expected 201 (Created)
+        self.assert_expected(req.status_code, 201)
+
+        response = req.json()
+
+        self.assert_true(response['token'])
+        self.assert_expected(response['status'], 'success')
+        self._token = response['token']
 
 
 if __name__ == '__main__':
