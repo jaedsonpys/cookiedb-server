@@ -1,3 +1,5 @@
+import os
+
 import dotenv
 from cookiedb import CookieDB
 
@@ -24,3 +26,6 @@ users_db = CookieDB(
 
 users_db.create_database(USERS_DB, if_not_exists=True)
 users_db.open(USERS_DB)
+
+if not os.path.isdir('./database'):
+    os.mkdir('./database')
