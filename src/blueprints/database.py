@@ -153,5 +153,26 @@ def use_db(payload, database_name):
                     response = jsonify(status='error', message='item_not_exists_error'), 404
                 else:
                     response = jsonify(status='success', message='item_updated'), 201
+    elif request.method == 'DELETE':
+        data: dict = request.json
+
+        if not data:
+            response = jsonify(status='error', message='no_data_found'), 400
+        else:
+            user_email = payload['email']
+            path = data.get('path')
+
+            if not path:
+                response = jsonify(status='error', message='path_required'), 400
+            elif not _database_exists(user_email, database_name):
+                response = jsonify(status='error', message='database_not_exists'), 404
+            else:
+                db_id = users_db.get(f'users/{user_email}/databases/{database_name}')
+                db = _get_user_database(user_email)
+                
+                db.open(db_id)
+                db.delete(path)
+
+                response = jsonify(status='success', message='item_deleted'), 200
 
     return response
