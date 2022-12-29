@@ -18,6 +18,30 @@ class TestAPI(bupytest.UnitTest):
         self._database_1 = 'TestDatabase'
         self._database_2 = 'Market'
 
+        self._database_1_data = {
+            'languages': {
+                'python': {
+                    'creator': 'Guido'
+                },
+                'javascript': {
+                    'creator': 'Brendan'
+                }
+            }
+        }
+
+        self._database_2_data = {
+            'products': {
+                'banana': {
+                    'value': 1.50,
+                    'inStock': True
+                },
+                'cookie': {
+                    'value': 2.75,
+                    'inStock': False
+                }
+            }
+        }
+
         if os.path.isdir('./database'):
             shutil.rmtree('./database', ignore_errors=True)
 
