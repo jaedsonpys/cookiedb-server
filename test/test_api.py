@@ -126,12 +126,28 @@ class TestAPI(bupytest.UnitTest):
             headers=self._get_auth_header()
         )
 
+        # expected 201 (Created)
         self.assert_expected(req.status_code, 201)
 
         response = req.json()
 
         self.assert_expected(response['status'], 'success')
         self.assert_expected(response['message'], 'database_created')
+
+    def test_create_database_with_same_name(self):
+        req = requests.post(
+            url=(URL + '/database'),
+            json={'databaseName': 'TestDatabase'},
+            headers=self._get_auth_header()
+        )
+
+        # expected 409 (Conflict)
+        self.assert_expected(req.status_code, 409)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'error')
+        self.assert_expected(response['message'], 'database_already_exists')
 
     def test_list_databases(self):
         req = requests.get(URL + '/database', headers=self._get_auth_header())
