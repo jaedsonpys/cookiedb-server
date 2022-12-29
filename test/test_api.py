@@ -122,7 +122,7 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'error')
         self.assert_expected(response['message'], 'email_and_password_required')
 
-    def test_create_database(self):
+    def test_create_database_1(self):
         req = requests.post(
             url=(URL + '/database'),
             json={'databaseName': self._database_1},
@@ -137,7 +137,7 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'success')
         self.assert_expected(response['message'], 'database_created')
 
-    def test_create_other_database(self):
+    def test_create_database_2(self):
         req = requests.post(
             url=(URL + '/database'),
             json={'databaseName': self._database_2},
