@@ -252,6 +252,20 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'success')
         self.assert_expected(response['result'], self._database_2_data)
 
+    def test_get_items_from_nonexistent_database(self):
+        req = requests.get(
+            url=(URL + f'/database/ThisNotExists'),
+            headers=self._get_auth_header(),
+            json={'path': 'fakePath/'}
+        )
+
+        self.assert_expected(req.status_code, 404)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'error')
+        self.assert_expected(response['message'], 'database_not_exists')
+
 
 if __name__ == '__main__':
     bupytest.this()
