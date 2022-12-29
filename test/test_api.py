@@ -210,7 +210,22 @@ class TestAPI(bupytest.UnitTest):
         response = req.json()
 
         self.assert_expected(response['status'], 'success')
-        self.assert_expected(response['result'], [self._database_1, self._database_2])
+        self.assert_expected(response['result'], [self._database_1, self._database_2, self._database_3])
+
+    def test_delete_database(self):
+        req = requests.delete(
+            url=(URL + '/database'),
+            json={'databaseName': self._database_3},
+            headers=self._get_auth_header()
+        )
+
+        # expected 200 (OK)
+        self.assert_expected(req.status_code, 200)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['message'], 'database_deleted')
 
     def test_add_items_database_1(self):
         req = requests.post(
