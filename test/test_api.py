@@ -13,7 +13,10 @@ USER_PW = '12345678'
 class TestAPI(bupytest.UnitTest):
     def __init__(self):
         super().__init__()
+
         self._token = None
+        self._database_1 = 'TestDatabase'
+        self._database_2 = 'Market'
 
         if os.path.isdir('./database'):
             shutil.rmtree('./database', ignore_errors=True)
@@ -122,7 +125,7 @@ class TestAPI(bupytest.UnitTest):
     def test_create_database(self):
         req = requests.post(
             url=(URL + '/database'),
-            json={'databaseName': 'TestDatabase'},
+            json={'databaseName': self._database_1},
             headers=self._get_auth_header()
         )
 
@@ -137,7 +140,7 @@ class TestAPI(bupytest.UnitTest):
     def test_create_other_database(self):
         req = requests.post(
             url=(URL + '/database'),
-            json={'databaseName': 'Market'},
+            json={'databaseName': self._database_2},
             headers=self._get_auth_header()
         )
 
@@ -152,7 +155,7 @@ class TestAPI(bupytest.UnitTest):
     def test_create_database_with_same_name(self):
         req = requests.post(
             url=(URL + '/database'),
-            json={'databaseName': 'TestDatabase'},
+            json={'databaseName': self._database_1},
             headers=self._get_auth_header()
         )
 
@@ -171,7 +174,7 @@ class TestAPI(bupytest.UnitTest):
         response = req.json()
 
         self.assert_expected(response['status'], 'success')
-        self.assert_expected(response['result'], ['TestDatabase', 'Market'])
+        self.assert_expected(response['result'], [self._database_1, self._database_2])
 
 
 if __name__ == '__main__':
