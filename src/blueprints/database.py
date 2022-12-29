@@ -1,7 +1,7 @@
 import os
 import secrets
 
-from cookiedb import CookieDB
+import cookiedb
 from flask import Blueprint, jsonify
 from flask import request
 
@@ -22,9 +22,9 @@ def _database_exists(user_email: str, database_name: str) -> bool:
     return database_name in databases
 
 
-def _get_user_database(email: str) -> CookieDB:
+def _get_user_database(email: str) -> cookiedb.CookieDB:
     user_password = users_db.get(f'users/{email}/password')
-    db = CookieDB(key=user_password, database_local=DATABASES_PATH)
+    db = cookiedb.CookieDB(key=user_password, database_local=DATABASES_PATH)
     return db
 
 
@@ -128,5 +128,30 @@ def use_db(payload, database_name):
                 db.add(path, value)
 
                 response = jsonify(status='success', message='item_added'), 201
+    elif request.method == 'PUT':
+        data: dict = request.json
+
+        if not data:
+            response = jsonify(status='error', message='no_data_found'), 400
+        else:
+            user_email = payload['email']
+            path = data.get('path')
+            value = data.get('value')
+
+            if not all([path, value]):
+                response = jsonify(status='error', message='path_and_value_required'), 400
+            elif not _database_exists(user_email, database_name):
+                response = jsonify(status='error', message='database_not_exists'), 404
+            else:
+                db = _get_user_database(user_email)
+                db_id = users_db.get(f'users/{user_email}/databases/{database_name}')
+                db.open(db_id)
+
+                try:
+                    db.update(path, value)
+                except cookiedb.exceptions.ItemNotExistsError:
+                    response = jsonify(status='error', message='item_not_exists_error'), 404
+                else:
+                    response = jsonify(status='success', message='item_updated'), 201
 
     return response
