@@ -267,7 +267,6 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['message'], 'database_not_exists')
 
     def test_update_items_database_1(self):
-        self._database_1_data['languages']['python']['creator'] = 'Guido van Rossum'
         req = requests.put(
             url=(URL + f'/database/{self._database_1}'),
             headers=self._get_auth_header(),
@@ -282,7 +281,6 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['message'], 'item_updated')
 
     def test_update_items_database_2(self):
-        self._database_2_data['products']['banana']['price'] = 2.25
         req = requests.put(
             url=(URL + f'/database/{self._database_2}'),
             headers=self._get_auth_header(),
