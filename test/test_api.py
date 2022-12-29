@@ -29,11 +29,11 @@ class TestAPI(bupytest.UnitTest):
 
         self._database_2_data = {
             'banana': {
-                'value': 1.50,
+                'price': 1.50,
                 'inStock': True
             },
             'cookie': {
-                'value': 2.75,
+                'price': 2.75,
                 'inStock': False
             }
         }
@@ -265,6 +265,36 @@ class TestAPI(bupytest.UnitTest):
 
         self.assert_expected(response['status'], 'error')
         self.assert_expected(response['message'], 'database_not_exists')
+
+    def test_update_items_database_1(self):
+        self._database_1_data['languages']['python']['creator'] = 'Guido van Rossum'
+        req = requests.put(
+            url=(URL + f'/database/{self._database_1}'),
+            headers=self._get_auth_header(),
+            json={'path': 'languages/python/creator', 'value': 'Guido van Rossum'}
+        )
+
+        self.assert_expected(req.status_code, 201)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['message'], 'item_updated')
+
+    def test_update_items_database_2(self):
+        self._database_2_data['products']['banana']['price'] = 2.25
+        req = requests.put(
+            url=(URL + f'/database/{self._database_2}'),
+            headers=self._get_auth_header(),
+            json={'path': 'products/banana/price', 'value': 2.25}
+        )
+
+        self.assert_expected(req.status_code, 201)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['message'], 'item_updated')
 
 
 if __name__ == '__main__':
