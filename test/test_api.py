@@ -322,6 +322,36 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'success')
         self.assert_expected(response['result'], 2.25)
 
+    def test_delete_item_database_1(self):
+        req = requests.delete(
+            url=(URL + f'/database/{self._database_1}'),
+            headers=self._get_auth_header(),
+            json={'path': 'languages/javascript'}
+        )
+
+        self._database_1_data.pop('javascript')
+        self.assert_expected(req.status_code, 200)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['message'], 'item_deleted')
+
+    def test_delete_item_database_2(self):
+        req = requests.delete(
+            url=(URL + f'/database/{self._database_2}'),
+            headers=self._get_auth_header(),
+            json={'path': 'products/cookie/inStock'}
+        )
+
+        del self._database_2_data['cookie']['inStock']
+        self.assert_expected(req.status_code, 200)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['message'], 'item_deleted')
+
 
 if __name__ == '__main__':
     bupytest.this()
