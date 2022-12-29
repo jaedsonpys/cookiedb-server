@@ -17,6 +17,7 @@ class TestAPI(bupytest.UnitTest):
         self._token = None
         self._database_1 = 'TestDatabase'
         self._database_2 = 'Market'
+        self._database_3 = 'TempDatabase'
 
         self._database_1_data = {
             'python': {
@@ -161,6 +162,21 @@ class TestAPI(bupytest.UnitTest):
         req = requests.post(
             url=(URL + '/database'),
             json={'databaseName': self._database_2},
+            headers=self._get_auth_header()
+        )
+
+        # expected 201 (Created)
+        self.assert_expected(req.status_code, 201)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['message'], 'database_created')
+
+    def test_create_database_3(self):
+        req = requests.post(
+            url=(URL + '/database'),
+            json={'databaseName': self._database_3},
             headers=self._get_auth_header()
         )
 
