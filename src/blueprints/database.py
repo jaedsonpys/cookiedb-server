@@ -118,7 +118,7 @@ def use_db(payload, database_name):
             value = data.get('value')
 
             if not all([path, value]):
-                response = jsonify(status='error', message='path_and_item_required'), 400
+                response = jsonify(status='error', message='path_and_value_required'), 400
             elif not _database_exists(user_email, database_name):
                 response = jsonify(status='error', message='database_not_exists'), 404
             else:
