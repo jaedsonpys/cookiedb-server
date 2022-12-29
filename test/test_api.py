@@ -19,26 +19,22 @@ class TestAPI(bupytest.UnitTest):
         self._database_2 = 'Market'
 
         self._database_1_data = {
-            'languages': {
-                'python': {
-                    'creator': 'Guido'
-                },
-                'javascript': {
-                    'creator': 'Brendan'
-                }
+            'python': {
+                'creator': 'Guido'
+            },
+            'javascript': {
+                'creator': 'Brendan'
             }
         }
 
         self._database_2_data = {
-            'products': {
-                'banana': {
-                    'value': 1.50,
-                    'inStock': True
-                },
-                'cookie': {
-                    'value': 2.75,
-                    'inStock': False
-                }
+            'banana': {
+                'value': 1.50,
+                'inStock': True
+            },
+            'cookie': {
+                'value': 2.75,
+                'inStock': False
             }
         }
 
@@ -204,7 +200,7 @@ class TestAPI(bupytest.UnitTest):
         req = requests.post(
             url=(URL + f'/database/{self._database_1}'),
             headers=self._get_auth_header(),
-            json=self._database_1_data
+            json={'path': 'languages/', 'value': self._database_1_data}
         )
 
         self.assert_expected(req.status_code, 201)
@@ -218,7 +214,7 @@ class TestAPI(bupytest.UnitTest):
         req = requests.post(
             url=(URL + f'/database/{self._database_2}'),
             headers=self._get_auth_header(),
-            json=self._database_2_data
+            json={'path': 'products/', 'value': self._database_2_data}
         )
 
         self.assert_expected(req.status_code, 201)
