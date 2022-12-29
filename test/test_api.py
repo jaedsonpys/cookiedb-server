@@ -134,6 +134,21 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'success')
         self.assert_expected(response['message'], 'database_created')
 
+    def test_create_other_database(self):
+        req = requests.post(
+            url=(URL + '/database'),
+            json={'databaseName': 'Market'},
+            headers=self._get_auth_header()
+        )
+
+        # expected 201 (Created)
+        self.assert_expected(req.status_code, 201)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['message'], 'database_created')
+
     def test_create_database_with_same_name(self):
         req = requests.post(
             url=(URL + '/database'),
@@ -156,7 +171,7 @@ class TestAPI(bupytest.UnitTest):
         response = req.json()
 
         self.assert_expected(response['status'], 'success')
-        self.assert_expected(response['result'], ['TestDatabase'])
+        self.assert_expected(response['result'], ['TestDatabase', 'Market'])
 
 
 if __name__ == '__main__':
