@@ -224,6 +224,34 @@ class TestAPI(bupytest.UnitTest):
         self.assert_expected(response['status'], 'success')
         self.assert_expected(response['message'], 'item_added')
 
+    def test_get_items_database_1(self):
+        req = requests.get(
+            url=(URL + f'/database/{self._database_1}'),
+            headers=self._get_auth_header(),
+            json={'path': 'languages/'}
+        )
+
+        self.assert_expected(req.status_code, 200)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['result'], self._database_1_data)
+
+    def test_get_items_database_2(self):
+        req = requests.get(
+            url=(URL + f'/database/{self._database_2}'),
+            headers=self._get_auth_header(),
+            json={'path': 'products/'}
+        )
+
+        self.assert_expected(req.status_code, 200)
+
+        response = req.json()
+
+        self.assert_expected(response['status'], 'success')
+        self.assert_expected(response['result'], self._database_2_data)
+
 
 if __name__ == '__main__':
     bupytest.this()
