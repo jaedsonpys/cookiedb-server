@@ -22,10 +22,19 @@ from flask import Blueprint, jsonify
 from flask import request
 
 from auth import _users_exists
+from auth import required_auth
 from config import users_db
 from config import UTOKEN_SECRET_KEY
 
 users = Blueprint('users', __name__)
+
+
+@users.route('/checkout')
+@required_auth
+def checkout(payload):
+    # serves to give a signal to the client to know
+    # if the authentication token is still valid
+    return jsonify(status='success')
 
 
 @users.route('/register', methods=['POST'])
