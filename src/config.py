@@ -24,7 +24,6 @@ env = dotenv.dotenv_values('.env')
 # enviroment variables
 SERVER_DATABASE_KEY = env.get('SERVER_DATABASE_KEY')
 UTOKEN_SECRET_KEY = env.get('UTOKEN_SECRET_KEY')
-FLASK_SECRET_KEY = env.get('FLASK_SECRET_KEY')
 DATABASES_PATH = env.get('DATABASES_PATH')
 
 SERVER_HOST = env.get('SERVER_HOST', '127.0.0.1')
@@ -34,10 +33,10 @@ SERVER_DEBUG = bool(env.get('SERVER_DEBUG', False))
 SERVER_CONFIG_DB = 'cookiedb-server'
 USERS_DB = 'cookiedb-users'
 
-if not all([SERVER_DATABASE_KEY, UTOKEN_SECRET_KEY, FLASK_SECRET_KEY]):
+if not all([SERVER_DATABASE_KEY, UTOKEN_SECRET_KEY]):
     import sys
-    print('Please set SERVER_DATABASE_KEY; UTOKEN_SECRET_KEY '
-          'and FLASK_SECRET_KEY enviroments variables!')
+    print('Please set SERVER_DATABASE_KEY and FLASK_SECRET_KEY '
+          'enviroments variables!')
 
     sys.exit(1)
 
