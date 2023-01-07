@@ -34,6 +34,13 @@ SERVER_DEBUG = bool(env.get('SERVER_DEBUG', False))
 SERVER_CONFIG_DB = 'cookiedb-server'
 USERS_DB = 'cookiedb-users'
 
+if not all([SERVER_DATABASE_KEY, UTOKEN_SECRET_KEY, FLASK_SECRET_KEY]):
+    import sys
+    print('Please set SERVER_DATABASE_KEY; UTOKEN_SECRET_KEY '
+          'and FLASK_SECRET_KEY enviroments variables!')
+
+    sys.exit(1)
+
 # users database
 users_db = CookieDB(
     key=SERVER_DATABASE_KEY,
