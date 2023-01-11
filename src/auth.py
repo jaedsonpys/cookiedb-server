@@ -24,7 +24,7 @@ class Auth:
 
     @staticmethod
     def _get_connection_id(address: tuple) -> str:
-        address_str = ':'.join(address).encode()
+        address_str = f'{address[0]}:{address[1]}'.encode()
         connection_id = hashlib.md5(address_str).hexdigest()
         return connection_id
 
