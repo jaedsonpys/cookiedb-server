@@ -35,3 +35,16 @@ class DBHandle:
             response = dict(status='success', message='database_created')
 
         return response
+
+    def analyze_request(self, request: dict) -> dict:
+        action = request['action']
+        path = request['path']
+
+        # Server Operations: Create database (CDB),
+        # delete database (DDB) and open database (ODB)
+        if action == 'CDB':
+            response = self._create_database(path)
+        elif action == 'DDB':
+            response = self._delete_database(path)
+
+        return response
