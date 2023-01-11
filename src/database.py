@@ -3,13 +3,13 @@ import cookiedb
 from .config import DATABASES_PATH
 from .config import PASSWORD_PATH
 
-with open(PASSWORD_PATH, 'r') as file:
-    DATABASE_KEY = file.read()
-
 
 class DBHandle:
     def __init__(self) -> None:
-        self._db = cookiedb.CookieDB(DATABASE_KEY, DATABASES_PATH)
+        with open(PASSWORD_PATH, 'r') as file:
+            key = file.read()
+
+        self._db = cookiedb.CookieDB(key, DATABASES_PATH)
 
     @staticmethod
     def list_databases() -> list:
