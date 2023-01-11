@@ -16,7 +16,7 @@ def check_config() -> None:
 def configure(password: str) -> None:
     salt = random.randint(0, 10)
     pw_with_salt = (password + str(salt)).encode()
-    hashed_pw = hashlib.sha256(pw_with_salt)
+    hashed_pw = hashlib.sha256(pw_with_salt).hexdigest()
 
     with open(PASSWORD_PATH, 'w') as file:
         file.write(hashed_pw)
