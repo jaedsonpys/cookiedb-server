@@ -3,6 +3,7 @@ import socket
 import threading
 
 from . import exceptions
+from .auth import Auth
 
 
 def parse(message: bytes) -> None:
@@ -45,7 +46,10 @@ class Server:
     def _run(self) -> None:
         while True:
             client, addr = self._socket.accept()
-            data = client.recv(1024)
+            password = client.recv(1024).decode()
+
+            if Auth._check_password(password):
+                client.send('SUCCESS login_successful')
 
     def run(self) -> None:
         print(f'Server started at {self._address[0]}:{self._address[1]}')
