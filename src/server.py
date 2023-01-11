@@ -31,7 +31,7 @@ def parse(message: bytes) -> None:
 
     result['data'] = data
     result['path'] = path
-    result['method'] = action
+    result['action'] = action
 
 
 def make_response(response: dict) -> bytes:
