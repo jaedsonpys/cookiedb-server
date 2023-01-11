@@ -1,5 +1,14 @@
 import os
+import cookiedb
 from .config import DATABASES_PATH
+from .config import PASSWORD_PATH
+
+
+def _get_key() -> str:
+    with open(PASSWORD_PATH, 'r') as file:
+        key = file.read()
+
+    return key
 
 
 def list_databases() -> list:
