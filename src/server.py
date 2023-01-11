@@ -59,9 +59,10 @@ class Server:
         self._socket.listen(5)
 
         self._auth = Auth()
+        self._running = False
 
     def _run(self) -> None:
-        while True:
+        while self._running:
             client, addr = self._socket.accept()
             password = client.recv(1024).decode()
 
@@ -71,7 +72,7 @@ class Server:
 
                 client_db = DBHandle()
 
-                while True:
+                while self._running:
                     message = client.recv(5024)
                     request = parse(message)
                     response = client_db.analyze_request(request)
@@ -83,6 +84,7 @@ class Server:
 
     def run(self) -> None:
         print(f'Server started at {self._address[0]}:{self._address[1]}')
+        self._running = True
 
         server_th = threading.Thread(target=self._run)
         server_th.start()
