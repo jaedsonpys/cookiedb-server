@@ -18,7 +18,7 @@ class DBHandle:
         return db_files
 
     @staticmethod
-    def _delete_database(self, name: str) -> dict:
+    def _delete_database(name: str) -> dict:
         db_file = os.path.join(DATABASES_PATH, f'{name}.cookiedb')
 
         if os.path.isfile(db_file):
