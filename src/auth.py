@@ -9,7 +9,7 @@ class Auth:
         with open(PASSWORD_PATH, 'rb') as file:
             hashed_pw = file.read()
 
-        for salt in range(0, 10):
+        for salt in range(0, 11):
             pw_and_salt = (password + str(salt)).encode()
             try_pw_hash = hashlib.sha256(pw_and_salt)
 
