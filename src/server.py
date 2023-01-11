@@ -88,3 +88,7 @@ class Server:
 
         server_th = threading.Thread(target=self._run)
         server_th.start()
+
+    def stop(self) -> None:
+        self._running = False
+        self._socket.close()
