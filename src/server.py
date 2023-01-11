@@ -43,7 +43,8 @@ def make_response(response: dict) -> bytes:
     msg = f'{status} {message}'
 
     if data:
-        msg += f'\n{data}'
+        json_data = json.dumps(data)
+        msg += f'\n{json_data}'
 
     return msg.encode()
 
