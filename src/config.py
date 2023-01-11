@@ -18,6 +18,9 @@ def check_config() -> None:
 
 
 def configure(password: str) -> None:
+    os.mkdir(COOKIEDB_PATH)
+    os.mkdir(DATABASES_PATH)
+
     salt = random.randint(0, 10)
     pw_with_salt = (password + str(salt)).encode()
     hashed_pw = hashlib.sha256(pw_with_salt).hexdigest()
