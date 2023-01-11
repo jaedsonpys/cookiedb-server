@@ -34,6 +34,15 @@ def parse(message: bytes) -> None:
     result['method'] = method
 
 
+def make_response(response: dict) -> bytes:
+    msg = f'{response["status"]} {response["message"]}'
+
+    if response['data']:
+        msg += f'\n{response["data"]}'
+
+    return msg.encode()
+
+
 class Server:
     def __init__(self, host: str = '127.0.0.1') -> None:
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
