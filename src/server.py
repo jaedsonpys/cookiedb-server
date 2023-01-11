@@ -2,6 +2,27 @@ import socket
 import threading
 
 
+
+def parse(message: bytes) -> None:
+    result = {}
+
+    message = message.decode()
+    lines = message.split('\n')
+
+    if len(lines) == 2:
+        header, data = lines
+    else:
+        header = lines[0]
+        data = None
+
+    # parse header
+    method, path = header.split(' ')
+
+    result['data'] = data
+    result['path'] = path
+    result['method'] = method
+
+
 class Server:
     def __init__(self, host: str = '127.0.0.1') -> None:
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
