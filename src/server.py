@@ -26,14 +26,12 @@ def parse(message: bytes) -> None:
     try:
         # parse header
         action, path = header.split(' ')
-        action_type, method = action.split(':')
     except ValueError:
         raise exceptions.InvalidMessageError('Invalid header error')
 
     result['data'] = data
     result['path'] = path
-    result['method'] = method
-    result['type'] = action_type
+    result['method'] = action
 
 
 def make_response(response: dict) -> bytes:
