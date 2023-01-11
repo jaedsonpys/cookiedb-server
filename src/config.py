@@ -6,6 +6,7 @@ from pathlib import Path
 HOME_USER = Path.home()
 COOKIEDB_PATH = os.path.join(HOME_USER, '.cookiedbserver')
 PASSWORD_PATH = os.path.join(COOKIEDB_PATH, 'password')
+DATABASES_PATH = os.path.join(COOKIEDB_PATH, 'databases')
 
 
 def check_config() -> None:
