@@ -14,7 +14,7 @@ class Auth:
 
         for salt in range(0, 11):
             pw_and_salt = (password + str(salt)).encode()
-            try_pw_hash = hashlib.sha256(pw_and_salt).hexdigest
+            try_pw_hash = hashlib.sha256(pw_and_salt).hexdigest()
 
             if hashed_pw == try_pw_hash:
                 # password match
