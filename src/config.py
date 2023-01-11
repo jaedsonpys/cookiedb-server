@@ -10,7 +10,11 @@ DATABASES_PATH = os.path.join(COOKIEDB_PATH, 'databases')
 
 
 def check_config() -> None:
-    return all([os.path.isdir(COOKIEDB_PATH), os.path.isdir(PASSWORD_PATH)])
+    return all([
+        os.path.isdir(COOKIEDB_PATH),
+        os.path.isfile(PASSWORD_PATH),
+        os.path.isdir(DATABASES_PATH)
+    ])
 
 
 def configure(password: str) -> None:
