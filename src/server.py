@@ -58,7 +58,8 @@ class Server:
             password = client.recv(1024).decode()
 
             if Auth._check_password(password):
-                client.send('SUCCESS login_successful')
+                response = make_response({'status': 'success', 'message': 'login_successfully'})
+                client.send(response)
 
     def run(self) -> None:
         print(f'Server started at {self._address[0]}:{self._address[1]}')
