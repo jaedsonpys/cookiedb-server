@@ -56,7 +56,7 @@ class Server:
 
         self._address = (host, 2808)
         self._socket.bind(self._address)
-        self._listen(5)
+        self._socket.listen(5)
 
         self._auth = Auth()
 
