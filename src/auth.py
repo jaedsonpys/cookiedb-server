@@ -5,7 +5,7 @@ from .config import PASSWORD_PATH
 
 class Auth:
     def __init__(self) -> None:
-        self._logged_users = {}
+        self._logged_users = []
 
     @staticmethod
     def _check_password(password: str) -> bool:
@@ -21,3 +21,12 @@ class Auth:
                 return True
 
         return False
+
+    def login(self, address: tuple, password: str) -> bool:
+        if self._check_password(password):
+            address_str = ':'.join(address).encode()
+            connection_id = hashlib.md5(address_str).hexdigest()
+            self._logged_users.append(connection_id)
+            return True
+        else:
+            return False
