@@ -12,10 +12,10 @@ class DBHandle:
         self._db = cookiedb.CookieDB(key, DATABASES_PATH)
 
     @staticmethod
-    def list_databases() -> list:
+    def _list_databases() -> list:
         db_files = os.listdir(DATABASES_PATH)
         db_files = [f.replace('.cookiedb', '') for f in db_files]
         return db_files
 
-    def create_database(self, name: str) -> None:
+    def _create_database(self, name: str) -> None:
         self._db.create_database(name, if_not_exists=name.endswith('?'))
