@@ -59,10 +59,9 @@ class Server:
         self._socket.listen(5)
 
         self._auth = Auth()
-        self._running = False
 
     def _run(self) -> None:
-        while self._running:
+        while 1:
             client, addr = self._socket.accept()
             password = client.recv(1024).decode()
 
@@ -72,13 +71,11 @@ class Server:
 
                 client_db = DBHandle()
 
-                while self._running:
+                while 1:
                     message = client.recv(5024)
                     request = parse(message)
                     response = client_db.analyze_request(request)
                     client.send(make_response(response))
-                else:
-                    client.close()
             else:
                 response = make_response({'status': 'error', 'message': 'invalid_password'})
                 client.send(response)
@@ -92,5 +89,4 @@ class Server:
         server_th.start()
 
     def stop(self) -> None:
-        self._running = False
         self._socket.close()
