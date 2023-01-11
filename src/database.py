@@ -18,11 +18,20 @@ class DBHandle:
         return db_files
 
     @staticmethod
-    def _delete_database(self, name: str) -> None:
+    def _delete_database(self, name: str) -> dict:
         db_file = os.path.join(DATABASES_PATH, f'{name}.cookiedb')
 
         if os.path.isfile(db_file):
             os.remove(db_file)
 
-    def _create_database(self, name: str) -> None:
-        self._db.create_database(name, if_not_exists=name.endswith('?'))
+        return dict(status='success', message='database_deleted')
+
+    def _create_database(self, name: str) -> dict:
+        try:
+            self._db.create_database(name, if_not_exists=name.endswith('?'))
+        except cookiedb.exceptions.DatabaseExistsError:
+            response = dict(status='error', message='database_exists')
+        else:
+            response = dict(status='success', message='database_created')
+
+        return response
