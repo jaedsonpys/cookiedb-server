@@ -6,6 +6,8 @@ from .config import PASSWORD_PATH
 with open(PASSWORD_PATH, 'r') as file:
     DATABASE_KEY = file.read()
 
+global_db = cookiedb.CookieDB(DATABASE_KEY, DATABASES_PATH)
+
 
 def list_databases() -> list:
     db_files = os.listdir(DATABASES_PATH)
@@ -14,5 +16,4 @@ def list_databases() -> list:
 
 
 def create_database(name: str) -> None:
-    db = cookiedb.CookieDB(DATABASE_KEY, DATABASES_PATH)
-    db.create_database(name, if_not_exists=name.endswith('?'))
+    global_db.create_database(name, if_not_exists=name.endswith('?'))
