@@ -35,3 +35,11 @@ class Auth:
             return connection_id
         else:
             return False
+
+    def logout(self, connection_id: str) -> bool:
+        try:
+            self._logged_users.remove(connection_id)
+        except ValueError:
+            return False
+        else:
+            return True
