@@ -4,8 +4,11 @@ from .config import PASSWORD_PATH
 
 
 class Auth:
+    def __init__(self) -> None:
+        self._logged_users = {}
+
     @staticmethod
-    def check_password(password: str) -> bool:
+    def _check_password(password: str) -> bool:
         with open(PASSWORD_PATH, 'rb') as file:
             hashed_pw = file.read()
 
