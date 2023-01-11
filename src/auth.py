@@ -22,11 +22,16 @@ class Auth:
 
         return False
 
+    @staticmethod
+    def _get_connection_id(address: tuple) -> str:
+        address_str = ':'.join(address).encode()
+        connection_id = hashlib.md5(address_str).hexdigest()
+        return connection_id
+
     def login(self, address: tuple, password: str) -> bool:
         if self._check_password(password):
-            address_str = ':'.join(address).encode()
-            connection_id = hashlib.md5(address_str).hexdigest()
+            connection_id = self._get_connection_id(address)
             self._logged_users.append(connection_id)
-            return True
+            return connection_id
         else:
             return False
