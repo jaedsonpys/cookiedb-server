@@ -41,10 +41,13 @@ class DBHandle:
         path = request['path']
 
         # Server Operations: Create database (CDB),
-        # delete database (DDB) and open database (ODB)
+        # delete database (DDB), open database (ODB)
+        # and list database (LDB).
         if action == 'CDB':
             response = self._create_database(path)
         elif action == 'DDB':
             response = self._delete_database(path)
+        elif action == 'LDB':
+            response = self._list_databases()
 
         return response
