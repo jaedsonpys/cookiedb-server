@@ -56,12 +56,14 @@ class Server:
         self._socket.bind(self._address)
         self._listen(5)
 
+        self._auth = Auth()
+
     def _run(self) -> None:
         while True:
             client, addr = self._socket.accept()
             password = client.recv(1024).decode()
 
-            if Auth._check_password(password):
+            if self._auth.login(addr, password):
                 response = make_response({'status': 'success', 'message': 'login_successfully'})
                 client.send(response)
 
