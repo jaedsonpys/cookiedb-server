@@ -7,3 +7,8 @@ class Server:
         self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self._socket.bind((host, 2808))
         self._listen(5)
+
+    def _run(self) -> None:
+        while True:
+            client, addr = self._socket.accept()
+            data = client.recv(1024)
