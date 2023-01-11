@@ -4,6 +4,7 @@ import threading
 
 from . import exceptions
 from .auth import Auth
+from .database import DBHandle
 
 
 def parse(message: bytes) -> None:
@@ -66,6 +67,14 @@ class Server:
             if self._auth.login(addr, password):
                 response = make_response({'status': 'success', 'message': 'login_successfully'})
                 client.send(response)
+
+                client_db = DBHandle()
+
+                while True:
+                    message = client.recv(5024)
+                    request = parse(message)
+                    response = client_db.analyze_request(request)
+                    client.send(make_response(response))
 
     def run(self) -> None:
         print(f'Server started at {self._address[0]}:{self._address[1]}')
