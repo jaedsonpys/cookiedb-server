@@ -1,6 +1,8 @@
+import json
 import socket
 import threading
 
+from . import exceptions
 
 
 def parse(message: bytes) -> None:
@@ -11,12 +13,20 @@ def parse(message: bytes) -> None:
 
     if len(lines) == 2:
         header, data = lines
+        # parse data
+        try:
+            data = json.loads(data)
+        except json.JSONDecodeError:
+            raise exceptions.InvalidDataError('Invalid JSON data')
     else:
         header = lines[0]
         data = None
 
-    # parse header
-    method, path = header.split(' ')
+    try:
+        # parse header
+        method, path = header.split(' ')
+    except ValueError:
+        raise exceptions.InvalidMessageError('Invalid header error')
 
     result['data'] = data
     result['path'] = path
