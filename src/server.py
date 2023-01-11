@@ -35,10 +35,14 @@ def parse(message: bytes) -> None:
 
 
 def make_response(response: dict) -> bytes:
-    msg = f'{response["status"]} {response["message"]}'
+    status = response['status'].upper()
+    message = response['message'].upper()
+    data = response['data']
 
-    if response['data']:
-        msg += f'\n{response["data"]}'
+    msg = f'{status} {message}'
+
+    if data:
+        msg += f'\n{data}'
 
     return msg.encode()
 
