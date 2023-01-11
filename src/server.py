@@ -75,6 +75,10 @@ class Server:
                     request = parse(message)
                     response = client_db.analyze_request(request)
                     client.send(make_response(response))
+            else:
+                response = make_response({'status': 'error', 'message': 'invalid_password'})
+                client.send(response)
+                client.close()
 
     def run(self) -> None:
         print(f'Server started at {self._address[0]}:{self._address[1]}')
