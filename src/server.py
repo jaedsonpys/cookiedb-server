@@ -62,7 +62,7 @@ class Server:
         self._auth = Auth()
 
     def _run(self) -> None:
-        while 1:
+        while True:
             client, addr = self._socket.accept()
             password = client.recv(1024).decode()
 
@@ -72,7 +72,7 @@ class Server:
 
                 client_db = DBHandle()
 
-                while 1:
+                while True:
                     message = client.recv(5024)
                     request = parse(message)
                     response = client_db.analyze_request(request)
