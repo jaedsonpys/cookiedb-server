@@ -38,12 +38,11 @@ def parse(message: bytes) -> None:
 def make_response(response: dict) -> bytes:
     status = response['status'].upper()
     message = response['message'].upper()
-    data = response['data']
 
     msg = f'{status} {message}'
 
-    if data:
-        json_data = json.dumps(data)
+    if response.get('data'):
+        json_data = json.dumps(response['data'])
         msg += f'\n{json_data}'
 
     return msg.encode()
