@@ -85,6 +85,7 @@ class Server:
         self._running = True
 
         server_th = threading.Thread(target=self._run)
+        server_th.setDaemon(True)
         server_th.start()
 
     def stop(self) -> None:
