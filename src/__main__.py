@@ -20,16 +20,6 @@ def main():
 
         sock = server.Server()
         sock.run()
-
-        print('Server has running...')
-
-        while 1:
-            try:
-                pass
-            except KeyboardInterrupt:
-                print('\nServer stopped.')
-                sock.stop()
-                return 0
     else:
         print('\033[32mWelcome to CookieDB Server!\033[m')
         print('Set a password to access your database.')
