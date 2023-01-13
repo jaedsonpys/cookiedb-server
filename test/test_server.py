@@ -38,6 +38,12 @@ class TestServer(bupytest.UnitTest):
         self.db = Client()
         self.db.connect('127.0.0.1', USER_PW)
 
+    def test_create_database(self):
+        self.db.create_database(self._database)
+        self.db.create_database(self._temp_database)
+
+        self.assert_expected(self.db.list_databases(), [self._database, self._temp_database])
+
 
 if __name__ == '__main__':
     bupytest.this()
