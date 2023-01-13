@@ -4,6 +4,8 @@ import shutil
 
 import bupytest
 
+from _client import Client
+
 sys.path.insert(0, './')
 
 from src.server import Server
@@ -32,6 +34,9 @@ class TestServer(bupytest.UnitTest):
 
         server = Server()
         server.run()
+
+        self.db = Client()
+        self.db.connect('127.0.0.1', USER_PW)
 
 
 if __name__ == '__main__':
