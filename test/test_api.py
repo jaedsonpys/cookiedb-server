@@ -2,7 +2,6 @@ import os
 import shutil
 
 import bupytest
-import requests
 
 URL = 'http://127.0.0.1:5500'
 USER_NAME = 'ThisTest'
@@ -10,7 +9,7 @@ USER_EMAIL = 'test@cookiedb.com'
 USER_PW = '12345678'
 
 
-class TestAPI(bupytest.UnitTest):
+class TestServer(bupytest.UnitTest):
     def __init__(self):
         super().__init__()
 
