@@ -46,7 +46,7 @@ class DBHandle:
     def _get_item(self, database: str, path: str) -> dict:
         self._db.open(database)
         result = self._db.get(path)
-        return dict(status='success', message='item_obtained', result=result)
+        return dict(status='success', message='item_obtained', data=result)
 
     def _delete_item(self, database: str, path: str) -> dict:
         self._db.open(database)
