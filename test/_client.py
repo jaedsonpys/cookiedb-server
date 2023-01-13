@@ -21,7 +21,7 @@ def parse(response: bytes) -> dict:
     if len(lines) == 2:
         data = lines[1]
         json_data = json.loads(data)
-        response['data'] = json_data
+        parsed_response['data'] = json_data
 
     return parsed_response
 
@@ -64,7 +64,7 @@ class Client:
 
     def list_databases(self) -> list:
         databases = self._request({'action': 'LDB', 'path': None})
-        return databases
+        return databases['data']
 
     def open(self, database: str) -> None:
         databases = self.list_databases()
@@ -74,12 +74,13 @@ class Client:
             raise cookiedb.exceptions.DatabaseNotFoundError('Database not exists')
 
     def create_database(self, database: str, if_not_exists: bool = False) -> None:
-        databases = self.list_databases()
+        if if_not_exists:
+            database = f'{database}?'
 
-        if database in databases and not if_not_exists:
+        response = self._request({'action': 'CDB', 'path': database})
+
+        if response['message'] == 'DATABASE_EXISTS' and not if_not_exists:
             raise cookiedb.exceptions.DatabaseExistsError('Database already exists')
-        else:
-            self._request({'action': 'CDB', 'path': database})
 
     def add(self, path: str, item: Any) -> None:
         self._request({'action': 'ADD', 'path': path, 'data': item})
