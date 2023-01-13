@@ -6,7 +6,7 @@ from typing import Any
 import cookiedb
 
 
-def parse(self, response: bytes) -> dict:
+def parse(response: bytes) -> dict:
     parsed_response = {}
 
     response = response.decode()
