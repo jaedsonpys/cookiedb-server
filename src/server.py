@@ -2,8 +2,6 @@ import json
 import socket
 import threading
 
-from time import sleep
-
 from . import exceptions
 from .auth import Auth
 from .database import DBHandle
@@ -89,9 +87,6 @@ class Server:
         server_th = threading.Thread(target=self._run)
         server_th.setDaemon(True)
         server_th.start()
-
-        while True:
-            sleep(10)
 
     def stop(self) -> None:
         self._socket.close()

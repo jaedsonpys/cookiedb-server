@@ -1,4 +1,5 @@
 import getpass
+from time import sleep
 
 from . import config
 from . import server
@@ -20,6 +21,9 @@ def main():
 
         sock = server.Server()
         sock.run()
+
+        while True:
+            sleep(10)
     else:
         print('\033[32mWelcome to CookieDB Server!\033[m')
         print('Set a password to access your database.')
