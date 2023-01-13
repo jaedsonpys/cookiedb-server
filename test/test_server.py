@@ -1,6 +1,7 @@
 import os
 import sys
 import shutil
+from pathlib import Path
 
 import bupytest
 
@@ -9,6 +10,7 @@ from _client import Client
 sys.path.insert(0, './')
 
 from src.server import Server
+from src.config import configure
 
 HOST = '127.0.0.1'
 USER_PW = '12345678'
@@ -32,6 +34,16 @@ class TestServer(bupytest.UnitTest):
             }
         }
 
+        home_dir = Path.home()
+        server_dir = os.path.join(home_dir, '.cookiedbserver')
+
+        if os.path.isdir(server_dir):
+            shutil.rmtree(server_dir)
+
+        # configure server
+        configure(USER_PW)
+
+        # run server
         server = Server()
         server.run()
 
