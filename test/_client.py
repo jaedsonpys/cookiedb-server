@@ -14,8 +14,9 @@ def parse(self, response: bytes) -> dict:
 
     header = lines[0]
     status, message = header.split(' ')
-    response['status'] = status
-    response['message'] = message
+
+    parsed_response['status'] = status
+    parsed_response['message'] = message
     
     if len(lines) == 2:
         data = lines[1]
