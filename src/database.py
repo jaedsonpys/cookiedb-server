@@ -17,7 +17,7 @@ class DBHandle:
     def _list_databases() -> list:
         db_files = os.listdir(DATABASES_PATH)
         db_files = [f.replace('.cookiedb', '') for f in db_files]
-        return db_files
+        return dict(status='success', message='database_listed', data=db_files)
 
     @staticmethod
     def _delete_database(name: str) -> dict:
