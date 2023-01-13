@@ -43,6 +43,16 @@ class DBHandle:
         self._db.add(path, item)
         return dict(status='success', message='item_added')
 
+    def _get_item(self, database: str, path: str) -> dict:
+        self._db.open(database)
+        result = self._db.get(path)
+        return dict(status='success', message='item_obtained', result=result)
+
+    def _delete_item(self, database: str, path: str) -> dict:
+        self._db.open(database)
+        self._db.delete(path)
+        return dict(status='success', message='item_deleted')
+
     def analyze_request(self, request: dict) -> dict:
         action = request['action']
         path = request['path']
