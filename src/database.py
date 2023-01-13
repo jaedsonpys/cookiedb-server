@@ -60,6 +60,13 @@ class DBHandle:
         # Server Operations: Create database (CDB),
         # delete database (DDB), open database (ODB)
         # and list database (LDB).
+        # 
+        # Database Operations: Add item (ADD), get item (GET),
+        # delete item (DEL), update (UPD). 
+        # 
+        # Database operations must follow the database name
+        # in the "action" field. Example: MyDatabase:GET
+
         if action == 'CDB':
             response = self._create_database(path)
         elif action == 'DDB':
