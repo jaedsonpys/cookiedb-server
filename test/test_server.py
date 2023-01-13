@@ -11,21 +11,10 @@ class TestServer(bupytest.UnitTest):
     def __init__(self):
         super().__init__()
 
-        self._token = None
-        self._database_1 = 'TestDatabase'
-        self._database_2 = 'Market'
-        self._database_3 = 'TempDatabase'
+        self._database = 'Market'
+        self._temp_database = 'TempDatabase'
 
-        self._database_1_data = {
-            'python': {
-                'creator': 'Guido'
-            },
-            'javascript': {
-                'creator': 'Brendan'
-            }
-        }
-
-        self._database_2_data = {
+        self._database_data = {
             'banana': {
                 'price': 1.50,
                 'inStock': True
