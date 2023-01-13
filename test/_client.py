@@ -26,7 +26,7 @@ def parse(response: bytes) -> dict:
     return parsed_response
 
 
-def make_request(self, request: dict) -> bytes:
+def make_request(request: dict) -> bytes:
     action = request['action'].upper()
     path = request['path'].upper()
 
