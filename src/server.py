@@ -7,7 +7,7 @@ from .auth import Auth
 from .database import DBHandle
 
 
-def parse(message: bytes) -> None:
+def parse(message: bytes) -> dict:
     result = {}
 
     message = message.decode()
@@ -33,6 +33,8 @@ def parse(message: bytes) -> None:
     result['data'] = data
     result['path'] = path
     result['action'] = action
+
+    return result
 
 
 def make_response(response: dict) -> bytes:
