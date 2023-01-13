@@ -3,9 +3,7 @@ import shutil
 
 import bupytest
 
-URL = 'http://127.0.0.1:5500'
-USER_NAME = 'ThisTest'
-USER_EMAIL = 'test@cookiedb.com'
+HOST = '127.0.0.1'
 USER_PW = '12345678'
 
 
