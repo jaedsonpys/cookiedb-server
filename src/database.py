@@ -1,4 +1,6 @@
 import os
+from typing import Any
+
 import cookiedb
 from .config import DATABASES_PATH
 from .config import PASSWORD_PATH
@@ -35,6 +37,11 @@ class DBHandle:
             response = dict(status='success', message='database_created')
 
         return response
+
+    def _add_item(self, database: str, path: str, item: Any) -> dict:
+        self._db.open(database)
+        self._db.add(path, item)
+        return dict(status='success', message='item_added')
 
     def analyze_request(self, request: dict) -> dict:
         action = request['action']
