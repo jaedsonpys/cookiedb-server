@@ -4,6 +4,7 @@ import shutil
 from pathlib import Path
 
 import bupytest
+import cookiedb
 
 from _client import Client
 
@@ -55,6 +56,14 @@ class TestServer(bupytest.UnitTest):
         self.db.create_database(self._temp_database)
 
         self.assert_expected(self.db.list_databases(), [self._database, self._temp_database])
+
+    def test_create_same_database(self):
+        try:
+            self.db.create_database(self._database)
+        except cookiedb.exceptions.DatabaseExistsError:
+            self.assert_true(True)
+        else:
+            self.assert_true(False, message='Expected a DatabaseExistsError exception')
 
 
 if __name__ == '__main__':
