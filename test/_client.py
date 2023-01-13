@@ -82,6 +82,9 @@ class Client:
         if response['message'] == 'DATABASE_EXISTS' and not if_not_exists:
             raise cookiedb.exceptions.DatabaseExistsError('Database already exists')
 
+    def delete_database(self, database: str) -> list:
+        self._request({'action': 'DDB', 'path': database})
+
     def add(self, path: str, item: Any) -> None:
         self._request({'action': 'ADD', 'path': path, 'data': item})
 

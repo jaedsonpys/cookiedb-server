@@ -65,6 +65,13 @@ class TestServer(bupytest.UnitTest):
         else:
             self.assert_true(False, message='Expected a DatabaseExistsError exception')
 
+    def test_delete_database(self):
+        self.db.delete_database(self._temp_database)
+
+    def test_list_databases(self):
+        databases = self.db.list_databases()
+        self.assert_expected(databases, [self._database])
+
 
 if __name__ == '__main__':
     bupytest.this()
