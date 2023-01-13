@@ -73,5 +73,18 @@ class DBHandle:
             response = self._delete_database(path)
         elif action == 'LDB':
             response = self._list_databases()
+        else:
+            try:
+                database, dbaction = action.split(':')
+            except ValueError:
+                response = dict(status='error', message='invalid_action')
+
+            if dbaction == 'GET':
+                response = self._get_item(database, path)
+            elif dbaction == 'ADD':
+                item = request['data']
+                response = self._add_item(database, path, item)
+            elif dbaction == 'DEL':
+                response = self._delete_item(database, path)
 
         return response
