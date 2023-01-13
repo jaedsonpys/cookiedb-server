@@ -39,7 +39,7 @@ def make_request(self, request: dict) -> bytes:
 
 
 class Client:
-    def __init__(self, host: str) -> None:
+    def __init__(self) -> None:
         self._client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._opened_database = None
 
