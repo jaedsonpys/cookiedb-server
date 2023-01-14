@@ -76,6 +76,14 @@ class TestServer(bupytest.UnitTest):
         databases = self.db.list_databases()
         self.assert_expected(databases, [self._database])
 
+    def test_open_database(self):
+        try:
+            self.db.open(self._database)
+        except cookiedb.exceptions.DatabaseNotFoundError:
+            self.assert_true(False, message='Unexpected DatabaseNotFoundError exception')
+        else:
+            self.assert_true(True)
+
 
 if __name__ == '__main__':
     bupytest.this()
