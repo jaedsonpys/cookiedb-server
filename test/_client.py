@@ -86,11 +86,14 @@ class Client:
         self._request({'action': 'DDB', 'path': database})
 
     def add(self, path: str, item: Any) -> None:
-        self._request({'action': 'ADD', 'path': path, 'data': item})
+        action = f'{self._opened_database}:ADD'
+        self._request({'action': action, 'path': path, 'data': item})
 
     def get(self, path: str) -> Any:
-        response = self._request({'action': 'GET', 'path': path})
+        action = f'{self._opened_database}:GET'
+        response = self._request({'action': action, 'path': path})
         return response['data']
 
     def delete(self, path: str) -> Any:
-        self._request({'action': 'DEL', 'path': path})
+        action = f'{self._opened_database}:DEL'
+        self._request({'action': action, 'path': path})
