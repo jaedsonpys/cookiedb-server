@@ -97,9 +97,6 @@ class Server:
                 client.close()
 
     def run(self) -> None:
-        print(f'Server started at {self._address[0]}:{self._address[1]}')
-        self._running = True
-
         server_th = threading.Thread(target=self._run)
         server_th.setDaemon(True)
         server_th.start()
