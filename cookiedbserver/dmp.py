@@ -19,6 +19,8 @@
 import json
 import struct
 
+from typing import Any
+
 
 class DMP:
     @staticmethod
@@ -49,6 +51,23 @@ class DMP:
 
         return request
 
+    @staticmethod
+    def parse_response(status: str, message: str, data: Any = None) -> bytes:
+        status, message = status.encode(), message.encode()
+        packed = struct.pack(f'{len(status)}s {len(message)}s', status, message)
+
+        if data:
+            packed += b'\n'
+            if isinstance(data, (list, dict, tuple)):
+                json_data = json.dumps(data)
+                packed += json_data.encode()
+            elif isinstance(data, str):
+                packed += data.encode()
+            elif isinstance(data, (int, float)):
+                packed += data.to_bytes(2, byteorder='big')
+
+        return packed
+
 
 if __name__ == '__main__':
     request_data = struct.pack('3s 14s', b'CDB', b'MyDatabaseName')
@@ -57,3 +76,5 @@ if __name__ == '__main__':
     request_data = struct.pack('3s 11s', b'ADD', b'users/:mydb')
     request_data += b'\n' + (json.dumps({'name': 'Jaedson'})).encode()
     print(DMP.parse_request(request_data))
+
+    print(DMP.parse_response('SUCCESS', 'this_ok', data=14))
