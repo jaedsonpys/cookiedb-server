@@ -25,6 +25,27 @@ class Server:
 
         self._auth = Auth()
 
+    def _handle_database(self, client: socket.socket, conn_id: str) -> None:
+        client_db = DBHandle()
+
+        while True:
+            message = client.recv(5024)
+
+            if not message:
+                self._auth.logout(conn_id)
+                break
+
+            request = DMP.parse_request(message)
+            response = client_db.analyze_request(request)
+
+            client_response = DMP.parse_response(
+                status=response['status'],
+                message=response['message'],
+                data=response.get('data')
+            )
+
+            client.send(client_response)
+
     def _run(self) -> None:
         while True:
             client, addr = self._socket.accept()
@@ -34,26 +55,7 @@ class Server:
             if conn_id:
                 response = DMP.parse_response('OKAY', 'login_successfully')
                 client.send(response)
-
-                client_db = DBHandle()
-
-                while True:
-                    message = client.recv(5024)
-
-                    if not message:
-                        self._auth.logout(conn_id)
-                        break
-
-                    request = DMP.parse_request(message)
-                    response = client_db.analyze_request(request)
-
-                    client_response = DMP.parse_response(
-                        status=response['status'],
-                        message=response['message'],
-                        data=response.get('data')
-                    )
-
-                    client.send(client_response)
+                self._handle_database(client, conn_id)
             else:
                 response = DMP.parse_response('FAIL', 'invalid_password')
                 client.send(response)
