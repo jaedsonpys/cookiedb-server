@@ -10,8 +10,8 @@ from _client import Client
 
 sys.path.insert(0, './')
 
-from src.server import Server
-from src.config import configure
+from cookiedbserver.server import Server
+from cookiedbserver.config import configure
 
 HOST = '127.0.0.1'
 USER_PW = '12345678'
