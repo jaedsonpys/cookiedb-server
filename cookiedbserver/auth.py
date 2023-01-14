@@ -7,6 +7,7 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 
 import hashlib
+from typing import Union
 
 from .config import PASSWORD_PATH
 
@@ -36,7 +37,7 @@ class Auth:
         connection_id = hashlib.md5(address_str).hexdigest()
         return connection_id
 
-    def login(self, address: tuple, password: str) -> bool:
+    def login(self, address: tuple, password: str) -> Union[bool, str]:
         if self._check_password(password):
             connection_id = self._get_connection_id(address)
             self._logged_users.append(connection_id)
