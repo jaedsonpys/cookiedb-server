@@ -1,5 +1,6 @@
-import socket
 import json
+import struct
+import socket
 
 from typing import Any
 
@@ -8,20 +9,28 @@ import cookiedb
 
 def parse(response: bytes) -> dict:
     parsed_response = {}
+    split_response = response.split(b'\n')
 
-    response = response.decode()
-    lines = response.split('\n')
+    header = split_response[0]
+    status, = struct.unpack('4s', header[:4])
+    message, = struct.unpack(f'{len(header[4:])}s', header[4:])
 
-    header = lines[0]
-    status, message = header.split(' ')
+    parsed_response['status'] = status.decode()
+    parsed_response['message'] = message.decode()
 
-    parsed_response['status'] = status
-    parsed_response['message'] = message
-    
-    if len(lines) == 2:
-        data = lines[1]
-        json_data = json.loads(data)
-        parsed_response['data'] = json_data
+    if len(split_response) == 2:
+        data = split_response[1]
+        datatype, = struct.unpack('4s', data[:4])
+        rdata = data[4:]
+
+        if datatype == b'json':
+            _data = json.loads(rdata)
+        elif datatype == b'numb':
+            _data = int.from_bytes(rdata, byteorder='big')
+        elif datatype == b'str':
+            _data = rdata.decode()
+
+        parsed_response['data'] = _data
 
     return parsed_response
 
