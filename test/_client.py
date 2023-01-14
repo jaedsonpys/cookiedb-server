@@ -60,7 +60,7 @@ class Client:
         response = self._client.recv(1024)
         response = parse(response)
 
-        if response['status'] != 'SUCCESS':
+        if response['status'] != 'OKAY':
             raise ConnectionError('Invalid password to connect')
 
     def _request(self, request: dict) -> dict:
