@@ -25,7 +25,7 @@ class DBHandle:
     def _list_databases() -> list:
         db_files = os.listdir(DATABASES_PATH)
         db_files = [f.replace('.cookiedb', '') for f in db_files]
-        return dict(status='success', message='database_listed', data=db_files)
+        return dict(status='okay', message='database_listed', data=db_files)
 
     @staticmethod
     def _delete_database(name: str) -> dict:
@@ -34,32 +34,32 @@ class DBHandle:
         if os.path.isfile(db_file):
             os.remove(db_file)
 
-        return dict(status='success', message='database_deleted')
+        return dict(status='okay', message='database_deleted')
 
     def _create_database(self, name: str) -> dict:
         try:
             self._db.create_database(name, if_not_exists=name.endswith('?'))
         except cookiedb.exceptions.DatabaseExistsError:
-            response = dict(status='error', message='database_exists')
+            response = dict(status='fail', message='database_exists')
         else:
-            response = dict(status='success', message='database_created')
+            response = dict(status='okay', message='database_created')
 
         return response
 
     def _add_item(self, database: str, path: str, item: Any) -> dict:
         self._db.open(database)
         self._db.add(path, item)
-        return dict(status='success', message='item_added')
+        return dict(status='okay', message='item_added')
 
     def _get_item(self, database: str, path: str) -> dict:
         self._db.open(database)
         result = self._db.get(path)
-        return dict(status='success', message='item_obtained', data=result)
+        return dict(status='okay', message='item_obtained', data=result)
 
     def _delete_item(self, database: str, path: str) -> dict:
         self._db.open(database)
         self._db.delete(path)
-        return dict(status='success', message='item_deleted')
+        return dict(status='okay', message='item_deleted')
 
     def analyze_request(self, request: dict) -> dict:
         action = request['action']
@@ -83,16 +83,16 @@ class DBHandle:
             response = self._list_databases()
         else:
             try:
-                database, dbaction = action.split(':')
+                database = request['database']
             except ValueError:
-                response = dict(status='error', message='invalid_action')
+                response = dict(status='fail', message='invalid_action')
             else:
-                if dbaction == 'GET':
+                if action == 'GET':
                     response = self._get_item(database, path)
-                elif dbaction == 'ADD':
+                elif action == 'ADD':
                     item = request['data']
                     response = self._add_item(database, path, item)
-                elif dbaction == 'DEL':
+                elif action == 'DEL':
                     response = self._delete_item(database, path)
 
         return response
