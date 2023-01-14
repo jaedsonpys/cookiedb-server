@@ -6,56 +6,12 @@
 
 # http://www.apache.org/licenses/LICENSE-2.0
 
-import json
 import socket
 import threading
 
-from . import exceptions
+from .dmp import DMP
 from .auth import Auth
 from .database import DBHandle
-
-
-def parse(message: bytes) -> dict:
-    result = {}
-
-    message = message.decode()
-    lines = message.split('\n')
-
-    if len(lines) == 2:
-        header, data = lines
-        # parse data
-        try:
-            data = json.loads(data)
-        except json.JSONDecodeError:
-            raise exceptions.InvalidDataError('Invalid JSON data')
-    else:
-        header = lines[0]
-        data = None
-
-    try:
-        # parse header
-        action, path = header.split(' ')
-    except ValueError:
-        raise exceptions.InvalidMessageError('Invalid header error')
-
-    result['data'] = data
-    result['path'] = path
-    result['action'] = action
-
-    return result
-
-
-def make_response(response: dict) -> bytes:
-    status = response['status'].upper()
-    message = response['message'].upper()
-
-    msg = f'{status} {message}'
-
-    if response.get('data'):
-        json_data = json.dumps(response['data'])
-        msg += f'\n{json_data}'
-
-    return msg.encode()
 
 
 class Server:
@@ -76,7 +32,7 @@ class Server:
             conn_id = self._auth.login(addr, password)
 
             if conn_id:
-                response = make_response({'status': 'success', 'message': 'login_successfully'})
+                response = DMP.parse_response('OKAY', 'login_successfully')
                 client.send(response)
 
                 client_db = DBHandle()
@@ -88,11 +44,18 @@ class Server:
                         self._auth.logout(conn_id)
                         break
 
-                    request = parse(message)
+                    request = DMP.parse_request(message)
                     response = client_db.analyze_request(request)
-                    client.send(make_response(response))
+
+                    client_response = DMP.parse_response(
+                        status=response['status'],
+                        message=response['message'],
+                        data=response.get('data')
+                    )
+
+                    client.send(client_response)
             else:
-                response = make_response({'status': 'error', 'message': 'invalid_password'})
+                response = DMP.parse_response('FAIL', 'invalid_password')
                 client.send(response)
                 client.close()
 
