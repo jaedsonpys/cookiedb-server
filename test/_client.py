@@ -43,7 +43,7 @@ def make_request(request: dict) -> bytes:
 
     if request.get('data'):
         json_data = json.dumps(request['data']).encode()
-        req_pack += f'\n{json_data}'
+        req_pack += f'\n{json_data}'.encode()
 
     return req_pack
 
