@@ -60,11 +60,14 @@ class DMP:
             packed += b'\n'
             if isinstance(data, (list, dict, tuple)):
                 json_data = json.dumps(data)
-                packed += json_data.encode()
+                datatype = struct.pack('4s', b'json')
+                packed += datatype + json_data.encode()
             elif isinstance(data, str):
-                packed += data.encode()
+                datatype = struct.pack('4s', b'stri')
+                packed += datatype + data.encode()
             elif isinstance(data, (int, float)):
-                packed += data.to_bytes(2, byteorder='big')
+                datatype = struct.pack('4s', b'numb')
+                packed += datatype + data.to_bytes(2, byteorder='big')
 
         return packed
 
@@ -77,4 +80,5 @@ if __name__ == '__main__':
     request_data += b'\n' + (json.dumps({'name': 'Jaedson'})).encode()
     print(DMP.parse_request(request_data))
 
-    print(DMP.parse_response('SUCCESS', 'this_ok', data=14))
+    response = DMP.parse_response('OKAY', 'this_ok', data=14)
+    print(response)
