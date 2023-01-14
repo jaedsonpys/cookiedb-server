@@ -39,13 +39,13 @@ def make_request(request: dict) -> bytes:
     action = request['action']
     path = request['path']
 
-    msg = f'{action} {path}'
+    req_pack = struct.pack(f'3s {len(path)}s', action.encode(), path.encode())
 
     if request.get('data'):
-        json_data = json.dumps(request['data'])
-        msg += f'\n{json_data}'
+        json_data = json.dumps(request['data']).encode()
+        req_pack += f'\n{json_data}'
 
-    return msg.encode()
+    return req_pack.encode()
 
 
 class Client:
