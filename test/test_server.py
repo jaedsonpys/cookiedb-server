@@ -84,6 +84,13 @@ class TestServer(bupytest.UnitTest):
         else:
             self.assert_true(True)
 
+    def test_add_item(self):
+        self.db.add('products', self._database_data)
+
+    def test_get_item(self):
+        items = self.db.get('products')
+        self.assert_expected(items, self._database_data)
+
 
 if __name__ == '__main__':
     bupytest.this()
