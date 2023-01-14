@@ -53,8 +53,9 @@ class DMP:
 
     @staticmethod
     def parse_response(status: str, message: str, data: Any = None) -> bytes:
-        status, message = status.encode(), message.encode()
-        packed = struct.pack(f'{len(status)}s {len(message)}s', status, message)
+        status = status.upper().encode()
+        message = message.upper().encode()
+        packed = struct.pack(f'4s {len(message)}s', status, message)
 
         if data:
             packed += b'\n'
