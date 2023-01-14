@@ -12,7 +12,7 @@ def parse(response: bytes) -> dict:
     split_response = response.split(b'\n')
 
     header = split_response[0]
-    status, = struct.unpack('4s', header[:4])
+    status, = struct.unpack(f'4s', header[:4])
     message, = struct.unpack(f'{len(header[4:])}s', header[4:])
 
     parsed_response['status'] = status.decode()
@@ -43,7 +43,8 @@ def make_request(request: dict) -> bytes:
 
     if request.get('data'):
         json_data = json.dumps(request['data']).encode()
-        req_pack += f'\n{json_data}'.encode()
+        req_pack += b'\n'
+        req_pack += json_data
 
     return req_pack
 
