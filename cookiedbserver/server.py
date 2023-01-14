@@ -73,8 +73,9 @@ class Server:
         while True:
             client, addr = self._socket.accept()
             password = client.recv(1024).decode()
+            conn_id = self._auth.login(addr, password)
 
-            if self._auth.login(addr, password):
+            if conn_id:
                 response = make_response({'status': 'success', 'message': 'login_successfully'})
                 client.send(response)
 
@@ -82,6 +83,11 @@ class Server:
 
                 while True:
                     message = client.recv(5024)
+
+                    if not message:
+                        self._auth.logout(conn_id)
+                        break
+
                     request = parse(message)
                     response = client_db.analyze_request(request)
                     client.send(make_response(response))
