@@ -41,3 +41,11 @@ class DMP:
         request['action'] = action
 
         return request
+
+
+if __name__ == '__main__':
+    request_data = struct.pack('3s 14s', b'CDB', b'MyDatabaseName')
+    print(DMP.parse_request(request_data))
+
+    request_data = struct.pack('3s 11s', b'ADD', b'users/:mydb')
+    print(DMP.parse_request(request_data))
