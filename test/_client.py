@@ -72,7 +72,7 @@ class Client:
         return response
 
     def list_databases(self) -> list:
-        databases = self._request({'action': 'LDB', 'path': None})
+        databases = self._request({'action': 'LDB', 'path': 'None'})
         return databases['data']
 
     def open(self, database: str) -> None:
