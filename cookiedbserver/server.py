@@ -16,14 +16,13 @@ from .database import DBHandle
 
 class Server:
     def __init__(self, host: str = '127.0.0.1') -> None:
+        self._auth = Auth()
+        self._address = (host, 2808)
+
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-        self._address = (host, 2808)
         self._socket.bind(self._address)
         self._socket.listen(5)
-
-        self._auth = Auth()
 
     def _handle_database(self, client: socket.socket, conn_id: str) -> None:
         client_db = DBHandle()
