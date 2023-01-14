@@ -91,6 +91,14 @@ class TestServer(bupytest.UnitTest):
         items = self.db.get('products')
         self.assert_expected(items, self._database_data)
 
+    def test_delete_item(self):
+        self.db.delete('products/banana')
+        self._database_data.pop('banana')
+
+    def test_get_item_2(self):
+        items = self.db.get('products')
+        self.assert_expected(items, self._database_data)
+
 
 if __name__ == '__main__':
     bupytest.this()
