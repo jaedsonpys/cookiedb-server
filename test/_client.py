@@ -45,7 +45,7 @@ def make_request(request: dict) -> bytes:
         json_data = json.dumps(request['data']).encode()
         req_pack += f'\n{json_data}'
 
-    return req_pack.encode()
+    return req_pack
 
 
 class Client:
