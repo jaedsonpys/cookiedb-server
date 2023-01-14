@@ -27,7 +27,7 @@ def parse(response: bytes) -> dict:
 
 
 def make_request(request: dict) -> bytes:
-    action = request['action'].upper()
+    action = request['action']
     path = request['path']
 
     msg = f'{action} {path}'
