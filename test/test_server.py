@@ -53,9 +53,16 @@ class TestServer(bupytest.UnitTest):
 
     def test_create_database(self):
         self.db.create_database(self._database)
+    
+    def test_create_temp_database(self):
         self.db.create_database(self._temp_database)
+    
+    def test_list_databases(self):
+        databases = self.db.list_databases()
+        self.assert_expected(databases, [self._database, self._temp_database])
 
-        self.assert_expected(self.db.list_databases(), [self._database, self._temp_database])
+    def test_delete_database(self):
+        self.db.delete_database(self._temp_database)
 
     def test_create_same_database(self):
         try:
@@ -65,10 +72,7 @@ class TestServer(bupytest.UnitTest):
         else:
             self.assert_true(False, message='Expected a DatabaseExistsError exception')
 
-    def test_delete_database(self):
-        self.db.delete_database(self._temp_database)
-
-    def test_list_databases(self):
+    def test_list_databases_2(self):
         databases = self.db.list_databases()
         self.assert_expected(databases, [self._database])
 
