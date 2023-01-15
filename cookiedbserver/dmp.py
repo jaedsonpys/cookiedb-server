@@ -73,7 +73,7 @@ class DMP:
         if data is not None:
             packed += b'\n'
             if isinstance(data, (list, dict, tuple)):
-                json_data = json.dumps(data)
+                json_data = json.dumps(data, separators=(',', ':'))
                 datatype = struct.pack('4s', b'json')
                 packed += datatype + json_data.encode()
             elif isinstance(data, str):
