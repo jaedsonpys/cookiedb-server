@@ -69,9 +69,12 @@ class DMP:
             elif isinstance(data, bool):
                 datatype = struct.pack('4s', b'bool')
                 packed += datatype + struct.pack('?', data)
-            elif isinstance(data, (int, float)):
-                datatype = struct.pack('4s', b'numb')
+            elif isinstance(data, int):
+                datatype = struct.pack('4s', b'intg')
                 packed += datatype + data.to_bytes(2, byteorder='big')
+            elif isinstance(data, float):
+                datatype = struct.pack('4s', b'flot')
+                packed += datatype + struct.pack('f', data)
 
         return packed
 

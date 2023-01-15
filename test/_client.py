@@ -25,8 +25,10 @@ def parse(response: bytes) -> dict:
 
         if datatype == b'json':
             _data = json.loads(rdata)
-        elif datatype == b'numb':
+        elif datatype == b'intg':
             _data = int.from_bytes(rdata, byteorder='big')
+        elif datatype == b'flot':
+            _data, = struct.unpack('f', rdata)
         elif datatype == b'stri':
             _data = rdata.decode()
         elif datatype == b'bool':
