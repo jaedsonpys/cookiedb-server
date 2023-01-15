@@ -1,17 +1,16 @@
 import os
-import sys
 import shutil
+import sys
 from pathlib import Path
 
 import bupytest
 import cookiedb
-
 from _client import Client
 
 sys.path.insert(0, './')
 
-from cookiedbserver.server import Server
 from cookiedbserver.config import configure
+from cookiedbserver.server import Server
 
 HOST = '127.0.0.1'
 USER_PW = '12345678'
