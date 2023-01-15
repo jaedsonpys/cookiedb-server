@@ -71,23 +71,25 @@ class DMP:
         packed = struct.pack(f'4s {len(message)}s', status, message)
 
         if data is not None:
-            packed += b'\n'
             if isinstance(data, (list, dict, tuple)):
                 json_data = json.dumps(data, separators=(',', ':'))
                 datatype = struct.pack('4s', b'json')
-                packed += datatype + json_data.encode()
+                _encoded_data = json_data.encode()
             elif isinstance(data, str):
                 datatype = struct.pack('4s', b'stri')
-                packed += datatype + data.encode()
+                _encoded_data = data.encode()
             elif isinstance(data, bool):
                 datatype = struct.pack('4s', b'bool')
-                packed += datatype + struct.pack('?', data)
+                _encoded_data = struct.pack('?', data)
             elif isinstance(data, int):
                 datatype = struct.pack('4s', b'intg')
-                packed += datatype + data.to_bytes(2, byteorder='big')
+                _encoded_data = data.to_bytes(2, byteorder='big')
             elif isinstance(data, float):
                 datatype = struct.pack('4s', b'flot')
-                packed += datatype + struct.pack('f', data)
+                _encoded_data = struct.pack('f', data)
+
+            packed += b'\n'
+            packed += datatype + _encoded_data
 
         return packed
 
