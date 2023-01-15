@@ -51,6 +51,17 @@ class DBHandle:
         self._db.add(path, item)
         return dict(status='okay', message='item_added')
 
+    def _update_item(self, database: str, path: str, item: Any) -> dict:
+        self._db.open(database)
+        try:
+            self._db.update(path, item)
+        except cookiedb.exceptions.ItemNotExistsError:
+            response = dict(status='fail', message='item_not_exists_error')
+        else:
+            response = dict(status='okay', message='item_updated')
+
+        return response
+
     def _get_item(self, database: str, path: str) -> dict:
         self._db.open(database)
         result = self._db.get(path)
@@ -94,5 +105,8 @@ class DBHandle:
                     response = self._add_item(database, path, item)
                 elif action == 'DEL':
                     response = self._delete_item(database, path)
+                elif action == 'UPD':
+                    item = request['data']
+                    response = self._update_item(database, path, item)
 
         return response
