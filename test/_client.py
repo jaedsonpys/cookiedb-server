@@ -99,6 +99,13 @@ class Client:
         _path = f'{path}:{self._opened_database}'
         self._request({'action': 'ADD', 'path': _path, 'data': item})
 
+    def update(self, path: str, item: Any) -> None:
+        _path = f'{path}:{self._opened_database}'
+        response = self._request({'action': 'UPD', 'path': _path, 'data': item})
+
+        if response['message'] == 'item_not_exists_error':
+            raise cookiedb.exceptions.ItemNotExistsError(f'Item "{item}" not exists')
+
     def get(self, path: str) -> Any:
         _path = f'{path}:{self._opened_database}'
         response = self._request({'action': 'GET', 'path': _path})
