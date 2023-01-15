@@ -10,11 +10,11 @@
 # 
 # Protocol Request Structure:
 # ACTION PATH:<DATABASE NAME> (required if requested "action" is GET, ADD, DEL, or UPD)
-# <data (required if requested "action" is GET, ADD, DEL, or UPD)>
+# <datatype> <data (required if requested "action" is GET, ADD, DEL, or UPD)>
 # 
 # Protocol Response Structure:
 # STATUS MESSAGE
-# <data (required if requested "action" is GET, ADD, DEL, or UPD)>
+# <datatype> <data (required if requested "action" is GET, ADD, DEL, or UPD)>
 
 import json
 import struct
