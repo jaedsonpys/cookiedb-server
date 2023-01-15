@@ -84,9 +84,6 @@ class Client:
             raise cookiedb.exceptions.DatabaseNotFoundError('Database not exists')
 
     def create_database(self, database: str, if_not_exists: bool = False) -> None:
-        if if_not_exists:
-            database = f'{database}?'
-
         response = self._request({'action': 'CDB', 'path': database})
 
         if response['message'] == 'DATABASE_EXISTS' and not if_not_exists:

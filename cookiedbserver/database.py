@@ -38,7 +38,7 @@ class DBHandle:
 
     def _create_database(self, name: str) -> dict:
         try:
-            self._db.create_database(name, if_not_exists=name.endswith('?'))
+            self._db.create_database(name)
         except cookiedb.exceptions.DatabaseExistsError:
             response = dict(status='fail', message='database_exists')
         else:
