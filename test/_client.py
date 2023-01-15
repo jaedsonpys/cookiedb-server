@@ -43,14 +43,29 @@ def make_request(request: dict) -> bytes:
     action = request['action']
     path = request['path']
 
-    req_pack = struct.pack(f'3s {len(path)}s', action.encode(), path.encode())
+    packed = struct.pack(f'3s {len(path)}s', action.encode(), path.encode())
+    data = request.get('data')
 
-    if request.get('data'):
-        json_data = json.dumps(request['data']).encode()
-        req_pack += b'\n'
-        req_pack += json_data
+    if data is not None:
+        packed += b'\n'
+        if isinstance(data, (list, dict, tuple)):
+            json_data = json.dumps(data)
+            datatype = struct.pack('4s', b'json')
+            packed += datatype + json_data.encode()
+        elif isinstance(data, str):
+            datatype = struct.pack('4s', b'stri')
+            packed += datatype + data.encode()
+        elif isinstance(data, bool):
+            datatype = struct.pack('4s', b'bool')
+            packed += datatype + struct.pack('?', data)
+        elif isinstance(data, int):
+            datatype = struct.pack('4s', b'intg')
+            packed += datatype + data.to_bytes(2, byteorder='big')
+        elif isinstance(data, float):
+            datatype = struct.pack('4s', b'flot')
+            packed += datatype + struct.pack('f', data)
 
-    return req_pack
+    return packed
 
 
 class Client:
