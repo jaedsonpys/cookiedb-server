@@ -29,6 +29,8 @@ def parse(response: bytes) -> dict:
             _data = int.from_bytes(rdata, byteorder='big')
         elif datatype == b'stri':
             _data = rdata.decode()
+        elif datatype == b'bool':
+            _data, = struct.unpack('?', rdata)
 
         parsed_response['data'] = _data
 
