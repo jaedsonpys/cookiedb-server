@@ -26,10 +26,14 @@ class TestServer(bupytest.UnitTest):
 
         self._database_data = {
             'banana': {
+                'id': 1,
+                'name': 'banana',
                 'price': 1.50,
                 'inStock': True
             },
             'cookie': {
+                'id': 2,
+                'name': 'cookie',
                 'price': 2.75,
                 'inStock': False
             }
@@ -106,6 +110,23 @@ class TestServer(bupytest.UnitTest):
     def test_get_item_3(self):
         items = self.db.get('products')
         self.assert_expected(items, self._database_data)
+
+    def test_check_datatype_get(self):
+        # bool type
+        in_stock = self.db.get('products/cookie/inStock')
+        self.assert_expected(in_stock, self._database_data['cookie']['inStock'])
+
+        # float
+        price = self.db.get('products/cookie/price')
+        self.assert_expected(price, self._database_data['cookie']['price'])
+
+        # int
+        p_id = self.db.get('products/cookie/id')
+        self.assert_expected(p_id, self._database_data['cookie']['id'])
+
+        # string
+        name = self.db.get('products/cookie/name')
+        self.assert_expected(name, self._database_data['cookie']['name'])
 
 
 if __name__ == '__main__':
