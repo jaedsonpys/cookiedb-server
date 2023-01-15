@@ -41,8 +41,21 @@ class DMP:
 
             if action in ('ADD', 'UPD'):
                 data = splited_msg[1]
-                json_data = json.loads(data)
-                request['data'] = json_data
+                rdata = data[4:]
+                datatype, = struct.unpack('4s', data[:4])
+
+                if datatype == b'json':
+                    _data = json.loads(rdata)
+                elif datatype == b'stri':
+                    _data = rdata.decode()
+                elif datatype == b'intg':
+                    _data = int.from_bytes(rdata, byteorder='big')
+                elif datatype == b'flot':
+                    _data, = struct.unpack('f', rdata)
+                elif datatype == b'bool':
+                    _data, = struct.unpack('?', rdata)
+
+                request['data'] = _data
         elif action in ('CDB', 'LDB', 'DDB', 'ODB'):
             path = fields[0]
 
