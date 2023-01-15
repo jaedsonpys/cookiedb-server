@@ -105,7 +105,6 @@ class TestServer(bupytest.UnitTest):
 
     def test_get_item_3(self):
         items = self.db.get('products')
-        print(items)
         self.assert_expected(items, self._database_data)
 
 
