@@ -27,7 +27,7 @@ def parse(response: bytes) -> dict:
             _data = json.loads(rdata)
         elif datatype == b'numb':
             _data = int.from_bytes(rdata, byteorder='big')
-        elif datatype == b'str':
+        elif datatype == b'stri':
             _data = rdata.decode()
 
         parsed_response['data'] = _data
