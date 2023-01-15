@@ -99,6 +99,15 @@ class TestServer(bupytest.UnitTest):
         items = self.db.get('products')
         self.assert_expected(items, self._database_data)
 
+    def test_update_item(self):
+        self.db.update('products/cookie/price', 3.50)
+        self._database_data['cookie']['price'] = 3.50
+
+    def test_get_item_3(self):
+        items = self.db.get('products')
+        print(items)
+        self.assert_expected(items, self._database_data)
+
 
 if __name__ == '__main__':
     bupytest.this()
