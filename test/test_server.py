@@ -111,6 +111,23 @@ class TestServer(bupytest.UnitTest):
         items = self.db.get('products')
         self.assert_expected(items, self._database_data)
 
+    def test_update_each_data(self):
+        # bool
+        self.db.update('products/cookie/inStock', True)
+        self._database_data['cookie']['inStock'] = True
+
+        # int
+        self.db.update('products/cookie/id', 3)
+        self._database_data['cookie']['id'] = 3
+
+        # float
+        self.db.update('products/cookie/price', 3.75)
+        self._database_data['cookie']['price'] = 3.75
+
+        # string
+        self.db.update('products/cookie/name', 'Cookie')
+        self._database_data['cookie']['name'] = 'Cookie'
+
     def test_check_datatype_get(self):
         # bool type
         in_stock = self.db.get('products/cookie/inStock')
