@@ -1,6 +1,6 @@
 # CookieDB Server
 
-The **CookieDB Server** was created to provide remote access to the [CookieDB database](https://github.com/jaedsonpys/cookiedb), increasing security and keeping your databases ***available when you need them***. To access this API, [use CookieDB Client](https://github.com/jaedsonpys/cookiedb-client) for Python.
+The **CookieDB Server** was created to provide remote access to the [CookieDB database](https://github.com/jaedsonpys/cookiedb) through a socket server, increasing security and maintaining your databases ***available when you need it***. To access this server, [use the CookieDB Client](https://github.com/jaedsonpys/cookiedb-client) for Python.
 
 ## License
 
