@@ -28,7 +28,7 @@ def _run_server():
         while True:
             sleep(10)
     except KeyboardInterrupt:
-        return None
+        sock.stop()
 
 
 def main():
