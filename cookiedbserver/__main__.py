@@ -44,7 +44,7 @@ def main():
         print('Connections will only be allowed if the password is correct.\n')
         
         try:
-            password = getpass.getpass('[?] Password: ')
+            password = getpass.getpass('[?] Set a password: ')
             password = password.strip()
 
             confirm_pw = getpass.getpass('[?] Confirm the password: ')
