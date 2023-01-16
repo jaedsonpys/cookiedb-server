@@ -84,3 +84,4 @@ class Server:
 
     def stop(self) -> None:
         self._socket.close()
+        log('info', 'Server closed')
