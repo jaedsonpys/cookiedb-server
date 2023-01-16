@@ -20,6 +20,13 @@ from .auth import Auth
 from .database import DBHandle
 
 
+def log(log_type: str, message: str) -> None:
+    if log_type == 'error':
+        print(f'[\033[1;31m{log_type.upper()}\033[m] {message}')
+    else:
+        print(f'[\033[1m{log_type.upper()}\033[m] {message}')
+
+
 class Server:
     def __init__(self, host: str = '127.0.0.1') -> None:
         self._auth = Auth()
@@ -58,10 +65,12 @@ class Server:
             conn_id = self._auth.login(addr, password)
 
             if conn_id:
+                log('info', f'Client {addr[0]}:{addr[1]} logged')
                 response = DMP.parse_response('OKAY', 'login_successfully')
                 client.send(response)
                 self._handle_database(client, conn_id)
             else:
+                log('error', f'Incorrect password to {addr[0]}:{addr[1]} login')
                 response = DMP.parse_response('FAIL', 'invalid_password')
                 client.send(response)
                 client.close()
@@ -70,6 +79,8 @@ class Server:
         server_th = threading.Thread(target=self._run)
         server_th.setDaemon(True)
         server_th.start()
+
+        log('info', f'Server started in {self._address[0]}:{self._address[1]}')
 
     def stop(self) -> None:
         self._socket.close()
