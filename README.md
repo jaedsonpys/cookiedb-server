@@ -5,9 +5,8 @@ The **CookieDB Server** was created to provide remote access to the [CookieDB da
 ## License
 
 ```
-GNU GENERAL PUBLIC LICENSE
-Version 3, 29 June 2007
-Copyright © 2023  Jaedson Silva
+Apache License Version 2.0
+Copyright 2023 Jaedson Silva
 ```
 
-This project uses the [GNU General Public License v3.0](https://github.com/jaedsonpys/cookiedb-server/blob/master/LICENSE). Please see the license file to more informations.
+This project uses the [Apache 2.0 License](https://github.com/jaedsonpys/cookiedb-server/blob/master/LICENSE). Please see the license file to more informations.
