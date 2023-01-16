@@ -15,6 +15,16 @@ git clone https://github.com/jaedsonpys/cookiedb-server.git
 python3 setup.py install
 ```
 
+## Configure the server
+
+Configuration is simple, you just need to specify the password to access the server after running the `cookiedbserver` command on the command line. The input looks like this
+
+```
+[?] Set a password:
+```
+
+After setting your password, just run the `cookiedbserver` command again to run your server which can be accessed by [CookieDB Client for Python](https://github.com/jaedsonpys/cookiedb-client).
+
 ## License
 
 ```
