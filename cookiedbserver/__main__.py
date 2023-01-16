@@ -20,6 +20,17 @@ from . import server
 from . import auth
 
 
+def _run_server():
+    sock = server.Server()
+    sock.run()
+
+    try:
+        while True:
+            sleep(10)
+    except KeyboardInterrupt:
+        return None
+
+
 def main():
     if config.check_config():
         try:
@@ -32,12 +43,8 @@ def main():
         except KeyboardInterrupt:
             print()
             return 0
-
-        sock = server.Server()
-        sock.run()
-
-        while True:
-            sleep(10)
+        else:
+            _run_server()
     else:
         print('\033[32mWelcome to CookieDB Server!\033[m')
         print('Set a password to access your database.')
