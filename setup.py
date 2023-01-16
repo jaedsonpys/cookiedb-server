@@ -17,7 +17,6 @@ setup(
     url='https://github.com/jaedsonpys/cookiedb-server',
     license='Apache 2.0',
     keywords=['server', 'database', 'cookiedb', 'socket'],
-    platforms=['any'],
     install_requires=['cookiedb==6.0.0'],
     entry_points={
         'console_scripts': [
