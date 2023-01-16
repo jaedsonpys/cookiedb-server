@@ -2,6 +2,9 @@
 
 The **CookieDB Server** was created to provide remote access to the [CookieDB database](https://github.com/jaedsonpys/cookiedb) through a socket server, increasing security and maintaining your databases ***available when you need it***. To access this server, [use the CookieDB Client](https://github.com/jaedsonpys/cookiedb-client) for Python.
 
+- [Project in PyPI](https://pypi.org/project/cookiedb-server)
+- [Source code](https://github.com/jaedsonpys/cookiedb-server)
+
 Install the `cookiedb-server` using the PIP Package Manager:
 
 ```
