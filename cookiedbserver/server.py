@@ -15,6 +15,8 @@
 import socket
 import threading
 
+from typing import Tuple
+
 from .dmp import DMP
 from .auth import Auth
 from .database import DBHandle
@@ -58,29 +60,35 @@ class Server:
 
             client.send(client_response)
 
-    def _run(self) -> None:
-        while True:
-            client, addr = self._socket.accept()
-            password = client.recv(1024).decode()
-            conn_id = self._auth.login(addr, password)
+    def _handle_client(self, csocket: Tuple[socket.socket, tuple]) -> None:
+        client, addr = csocket
+        password = client.recv(1024).decode()
+        conn_id = self._auth.login(addr, password)
 
-            if conn_id:
-                log('info', f'Client {addr[0]}:{addr[1]} logged')
-                response = DMP.parse_response('OKAY', 'login_successfully')
-                client.send(response)
-                self._handle_database(client, conn_id)
-            else:
-                log('error', f'Incorrect password to {addr[0]}:{addr[1]} login')
-                response = DMP.parse_response('FAIL', 'invalid_password')
-                client.send(response)
-                client.close()
+        if conn_id:
+            log('info', f'Client {addr[0]}:{addr[1]} logged')
+            response = DMP.parse_response('OKAY', 'login_successfully')
+            client.send(response)
+            self._handle_database(client, conn_id)
+        else:
+            log('error', f'Incorrect password to {addr[0]}:{addr[1]} login')
+            response = DMP.parse_response('FAIL', 'invalid_password')
+            client.send(response)
+            client.close()
+
+    def _run(self) -> None:
+        log('info', f'Server started in {self._address[0]}:{self._address[1]}')
+
+        while True:
+            csocket = self._socket.accept()
+            client_th = threading.Thread(target=self._handle_client, args=(csocket,))
+            client_th.setDaemon(True)
+            client_th.start()
 
     def run(self) -> None:
         server_th = threading.Thread(target=self._run)
         server_th.setDaemon(True)
         server_th.start()
-
-        log('info', f'Server started in {self._address[0]}:{self._address[1]}')
 
     def stop(self) -> None:
         self._socket.close()
