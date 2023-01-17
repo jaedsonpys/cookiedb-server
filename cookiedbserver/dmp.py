@@ -20,12 +20,16 @@
 # 
 # Protocol Response Structure:
 # STATUS MESSAGE
-# <datatype> <data (required if requested "action" is GET, ADD, DEL, or UPD)>
+# <datatype> <data (required if requested "action" is GET)>
 
 import json
 import struct
 
 from typing import Any
+
+
+class NoneData:
+    pass
 
 
 class DMP:
@@ -60,6 +64,8 @@ class DMP:
                     _data, = struct.unpack('f', rdata)
                 elif datatype == b'bool':
                     _data, = struct.unpack('?', rdata)
+                elif datatype == b'none':
+                    _data = None
 
                 request['data'] = _data
         elif action in ('CDB', 'LDB', 'DDB', 'ODB'):
@@ -71,12 +77,12 @@ class DMP:
         return request
 
     @staticmethod
-    def parse_response(status: str, message: str, data: Any = None) -> bytes:
+    def parse_response(status: str, message: str, data: Any = NoneData) -> bytes:
         status = status.upper().encode()
         message = message.upper().encode()
         packed = struct.pack(f'4s {len(message)}s', status, message)
 
-        if data is not None:
+        if data is not NoneData:
             if isinstance(data, (list, dict, tuple)):
                 json_data = json.dumps(data, separators=(',', ':'))
                 datatype = struct.pack('4s', b'json')
@@ -93,6 +99,9 @@ class DMP:
             elif isinstance(data, float):
                 datatype = struct.pack('4s', b'flot')
                 _encoded_data = struct.pack('f', data)
+            elif data is None:
+                datatype = struct.pack('4s', b'none')
+                _encoded_data = b'None'
 
             packed += b'\n'
             packed += datatype + _encoded_data
