@@ -7,6 +7,10 @@ from typing import Any
 import cookiedb
 
 
+class NoneData:
+    pass
+
+
 def parse(response: bytes) -> dict:
     parsed_response = {}
     split_response = response.split(b'\n')
@@ -33,6 +37,8 @@ def parse(response: bytes) -> dict:
             _data = rdata.decode()
         elif datatype == b'bool':
             _data, = struct.unpack('?', rdata)
+        elif datatype == b'none':
+            _data = None
 
         parsed_response['data'] = _data
 
@@ -44,9 +50,9 @@ def make_request(request: dict) -> bytes:
     path = request['path']
 
     packed = struct.pack(f'3s {len(path)}s', action.encode(), path.encode())
-    data = request.get('data')
+    data = request.get('data', NoneData)
 
-    if data is not None:
+    if data is not NoneData:
         if isinstance(data, (list, dict, tuple)):
             json_data = json.dumps(data, separators=(',', ':'))
             datatype = struct.pack('4s', b'json')
@@ -63,6 +69,9 @@ def make_request(request: dict) -> bytes:
         elif isinstance(data, float):
             datatype = struct.pack('4s', b'flot')
             _encoded_data = struct.pack('f', data)
+        elif data is None:
+            datatype = struct.pack('4s', b'none')
+            _encoded_data = b'None'
 
         packed += b'\n'
         packed += datatype + _encoded_data

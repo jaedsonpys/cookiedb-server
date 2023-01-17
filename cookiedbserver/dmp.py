@@ -64,6 +64,8 @@ class DMP:
                     _data, = struct.unpack('f', rdata)
                 elif datatype == b'bool':
                     _data, = struct.unpack('?', rdata)
+                elif datatype == b'none':
+                    _data = None
 
                 request['data'] = _data
         elif action in ('CDB', 'LDB', 'DDB', 'ODB'):
@@ -97,6 +99,9 @@ class DMP:
             elif isinstance(data, float):
                 datatype = struct.pack('4s', b'flot')
                 _encoded_data = struct.pack('f', data)
+            elif data is None:
+                datatype = struct.pack('4s', b'none')
+                _encoded_data = b'None'
 
             packed += b'\n'
             packed += datatype + _encoded_data
