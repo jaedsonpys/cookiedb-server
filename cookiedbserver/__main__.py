@@ -38,7 +38,7 @@ def main():
             password = password.strip()
 
             while not auth.Auth._check_password(password):
-                password = getpass.getpass('[?] Password (\033[31mTry Again\033[m): ')
+                password = getpass.getpass('[?] Password (\033[1;31mTry Again\033[m): ')
                 password = password.strip()
         except KeyboardInterrupt:
             print()
@@ -58,7 +58,7 @@ def main():
             confirm_pw = confirm_pw.strip()
 
             while password != confirm_pw:
-                confirm_pw = getpass.getpass('[?] Confirm the password (\033[31mTry Again\033[m): ')
+                confirm_pw = getpass.getpass('[?] Confirm the password (\033[1;31mTry Again\033[m): ')
                 confirm_pw = confirm_pw.strip()
         except KeyboardInterrupt:
             print()
