@@ -28,13 +28,15 @@ class TestServer(bupytest.UnitTest):
                 'id': 1,
                 'name': 'banana',
                 'price': 1.50,
-                'inStock': True
+                'inStock': True,
+                'availableIn': 'Market'
             },
             'cookie': {
                 'id': 2,
                 'name': 'cookie',
                 'price': 2.75,
-                'inStock': False
+                'inStock': False,
+                'availableIn': 'Market'
             }
         }
 
@@ -127,6 +129,10 @@ class TestServer(bupytest.UnitTest):
         self.db.update('products/cookie/name', 'Cookie')
         self._database_data['cookie']['name'] = 'Cookie'
 
+        # none
+        self.db.update('products/cookie/availableIn', None)
+        self._database_data['cookie']['availableIn'] = None
+
     def test_check_datatype_get(self):
         # bool type
         in_stock = self.db.get('products/cookie/inStock')
@@ -143,6 +149,10 @@ class TestServer(bupytest.UnitTest):
         # string
         name = self.db.get('products/cookie/name')
         self.assert_expected(name, self._database_data['cookie']['name'])
+
+        # none
+        available = self.db.get('products/cookie/availableIn')
+        self.assert_expected(available, self._database_data['cookie']['availableIn'])
 
 
 if __name__ == '__main__':
