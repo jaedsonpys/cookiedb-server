@@ -28,6 +28,10 @@ import struct
 from typing import Any
 
 
+class NoneData:
+    pass
+
+
 class DMP:
     @staticmethod
     def parse_request(message: bytes) -> dict:
@@ -71,12 +75,12 @@ class DMP:
         return request
 
     @staticmethod
-    def parse_response(status: str, message: str, data: Any = None) -> bytes:
+    def parse_response(status: str, message: str, data: Any = NoneData) -> bytes:
         status = status.upper().encode()
         message = message.upper().encode()
         packed = struct.pack(f'4s {len(message)}s', status, message)
 
-        if data is not None:
+        if data is not NoneData:
             if isinstance(data, (list, dict, tuple)):
                 json_data = json.dumps(data, separators=(',', ':'))
                 datatype = struct.pack('4s', b'json')
