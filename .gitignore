@@ -1,10 +1,5 @@
 venv/
-database/
 __pycache__/
-
-# enviroment
-.env
-*.cookiedb
 
 # build
 *.egg-info
